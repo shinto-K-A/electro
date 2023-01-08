@@ -1,0 +1,337 @@
+<body>
+
+
+	<!-- NAVIGATION -->
+
+	<!-- /NAVIGATION -->
+
+	<!-- BREADCRUMB -->
+	<div id="breadcrumb" class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /BREADCRUMB -->
+
+	<!-- SECTION -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<form id="checkout-form">
+
+
+					{{#each adress}}
+
+
+					<div class="card w-50">
+
+						<div class="card-body">
+							<h3 class="card-title">Address</h3>
+							<h5 class="card-text">Place:{{this.address.place}}</h5>
+							<h5 class="card-text">City: {{this.address.city}}</h5>
+							<h5 class="card-text">House name: {{this.address.housename}}</h5>
+							<h5 class="card-text">Post office: {{this.address.postoffice}}</h5>
+							<h5 class="card-text">Pin code: {{this.address.pincode}}</h5>
+							<a class="btn btn-primary"
+								onclick="fillall('{{this.address.place}}','{{this.address.city}}','{{this.address.housename}}','{{this.address.postoffice}}','{{this.address.pincode}}')">Fill</a>
+						</div>
+					</div>
+					{{!--
+			</div> --}}
+			{{/each}}
+
+
+			<div class="col-md-6">
+				<!-- Billing Details -->
+				<div class="billing-details">
+					<div class="section-title">
+						<h3 class="title">Delivery Address</h3>
+					</div>
+					<div class="form-group">
+						<label>Place</label>
+						<input class="input" type="text" name="place" id="plac" placeholder="Place">
+					</div>
+
+					<div class="form-group">
+						<label>City</label>
+						<input class="input" type="text" name="city" id="cityy" placeholder="City">
+					</div>
+					<div class="form-group">
+						<label>House Name</label>
+						<input class="input" type="text" name="housename" id="housee"
+							placeholder="Housename">
+					</div>
+					<div class="form-group">
+						<label>Post Office</label>
+						<input class="input" type="text" name="postoffice" id="postt"
+							placeholder="Postoffice">
+					</div>
+					<div class="form-group">
+						<label>Pin Code</label>
+						<input class="input" type="number" name="pincode" id="pinn" placeholder="Pincode">
+					</div>
+
+					<input class="input" type="text" name="userId" value="{{user._id}}" hidden>
+
+
+				</div>
+
+
+			</div>
+			<div class="col-md-6 order-details">
+				<div class="section-title text-center">
+					<h3 class="title">Your Order</h3>
+				</div>
+				<div class="order-summary">
+
+
+
+					<div class="order-col">
+						<div><strong>TOTAL</strong></div>
+						<div><strong class="order-total" id="totalAmount">${{total}}</strong></div>
+					</div>
+				</div>
+				<div class="payment-method">
+					<div class="input-radio">
+						<input type="radio" value="COD" name="paymentMethod" id="payment-1">
+						<label for="payment-1">
+							<span></span>
+							COD
+						</label>
+
+					</div>
+					<div class="input-radio">
+						<input type="radio" value="ONLINE" name="paymentMethod" id="payment-2">
+						<label for="payment-2">
+							<span></span>
+							RAZOR PAY
+						</label>
+					</div>
+					<div class="input-radio">
+						<input type="radio" value="PAYPAL" name="paymentMethod" id="payment-3">
+						<label for="payment-3">
+							<span></span>
+							PAYPAL
+						</label>
+					</div>
+
+				</div>
+
+				<button type="submit" class="primary-btn order-submit">Place order</button>
+			</div>
+
+
+			</form>
+			{{!-- //hhhhhhhhhhhhhhhhh --}}
+			<div class="col-md-6 order-details" id="Details" hidden>
+				<div class="section-title text-center">
+					<h3 class="title">Your Order</h3>
+				</div>
+				<div class="order-summary">
+
+
+
+					<div class="order-col">
+						<div><strong style="color: gray;">TOTAL PRICE</strong></div>
+						<div><strong class="order-total" id="totalprice" style="color: gray;"></strong></div>
+
+					</div>
+					<div class="order-col">
+						<div><strong style="color: gray;">DISCOUNT PRICE</strong></div>
+						<div><strong class="order-total" id="discountprice" style="color: gray;"></strong></div>
+
+					</div>
+					<div class="order-col">
+						<div><strong style="color: gray;">YOU SAVED</strong></div>
+						<div><strong class="order-total" id="savedprice" style="color: gray;"></strong></div>
+
+					</div>
+				</div>
+
+
+			</div>
+			{{!-- //hhhhhhhhhhh --}}
+
+
+
+
+
+			<!-- Order Details -->
+
+
+
+			<!-- /Order Details -->
+		</div>
+		<hr>
+		<h5>Coupen Code</h5>
+		<div class="form-group mt-3">
+			<label for="exampleInputEmail1">Code</label>
+			<input type="text" name="code" class="form-control bg-white text-black" id="couponInput"
+				aria-describedby="emailHelp" placeholder="Code">
+			<div><span id="errorMsg" style="color: red;"></span></div>
+
+			<button class="btn btn-primary mt-3" onclick="coupon()">Apply</button>
+
+		</div>
+
+
+
+
+
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+	</div>
+
+
+	<script>
+
+
+		$("#checkout-form").submit((e) => {
+			e.preventDefault()
+			$.ajax({
+				url: '/place-order',
+				method: 'post',
+				data: $('#checkout-form').serialize(),
+				success: (response) => {
+					alert('conform')
+					if (response.codSuccess) {
+						location.href = '/success'
+					}
+					else if (response.pay) {
+						location.replace(response.linkto)
+
+					} else {
+						razorpayPayment(response)
+
+					}
+				}
+			})
+		})
+		function razorpayPayment(order) {
+			var options = {
+				"key": "rzp_test_gFSzKrbiJVMqDa", // Enter the Key ID generated from the Dashboard
+				"amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+				"currency": "INR",
+				"name": "Crossroads",
+				"description": "Test Transaction",
+				"image": "https://example.com/your_logo",
+				"order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+				"callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+				"handler": function (response) {
+
+
+					verifyPayment(response, order)
+				},
+				"prefill": {
+					"name": "Gaurav Kumar",
+					"email": "gaurav.kumar@example.com",
+					"contact": "9999999999"
+				},
+				"notes": {
+					"address": "Razorpay Corporate Office"
+				},
+				"theme": {
+					"color": "#3399cc"
+				}
+			};
+			var rzp1 = new Razorpay(options);
+			rzp1.open();
+		}
+		function verifyPayment(payment, order) {
+			$.ajax({
+				url: '/verify-payment',
+				data: {
+					payment,
+					order
+				},
+				method: 'post',
+				success: (response) => {
+					if (response.status) {
+						location.href = '/success'
+
+					} else {
+						alert("payment failed")
+					}
+
+				}
+
+			})
+
+		}
+		function fillall(plac, cty, housenme, postofice, pincod,) {
+
+			document.getElementById('plac').value = plac;
+			document.getElementById('cityy').value = cty;
+			document.getElementById('housee').value = housenme;
+			document.getElementById('postt').value = postofice;
+			document.getElementById('pinn').value = pincod;
+		}
+		function coupon() {
+			let couponName = document.getElementById('couponInput').value
+			console.log(couponName, 'fffffffffffffffffggggggggggggg')
+			$.ajax({
+				url: '/coupon-verify',
+				data: {
+					coupon: couponName
+				},
+				method: 'post',
+				success: (response) => {
+					if (response.verify) {
+						document.getElementById('totalAmount').innerHTML = response.amount
+						document.getElementById("Details").hidden = false
+						document.getElementById('totalprice').innerHTML = response.originalPrice
+						document.getElementById('discountprice').innerHTML = response.amount
+						document.getElementById('savedprice').innerHTML = response.savedAmount
+						//location.reload()
+					}
+					else {
+
+						if (response.invalidDate) {
+							document.getElementById('errorMsg').innerHTML = response.invalidDateMsg
+							setTimeout(()=>{
+								response.invalidDateMsg=null
+								//location.reload()
+							},3000)
+						}
+						else if (response.minAmount) {
+							document.getElementById('errorMsg').innerHTML = response.minAmountMsg
+							setTimeout(()=>{
+								response.minAmountMsg=null
+								//location.reload()
+							},3000)
+						}
+						else if (response.invalidCoupon) { 
+							document.getElementById('errorMsg').innerHTML = response.invalidCouponMsg
+							setTimeout(()=>{
+								response.invalidCouponMsg=null
+								//location.reload()
+							},3000) }
+
+
+					}
+
+
+
+				}
+			})
+		}
+	</script>
+
+	<!-- /NEWSLETTER -->
+
+	<!-- FOOTER -->
+
+	<!-- /FOOTER -->
+
+	<!-- jQuery Plugins -->
+
+</body>

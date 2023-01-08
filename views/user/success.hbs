@@ -1,0 +1,62 @@
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 order-details">
+        <div class="section-title text-center">
+          <h1 class="title text-success">ORDER PLACED</h1>
+        </div>
+        <!--================Order Details Area =================-->
+	<section class="order_details section_gap">
+		<div class="container" style="padding-top: 100PX;">
+			
+			<div class="row order_d_inner">
+				<div class="col-lg-6">
+					<div class="details_item">
+						<h4>Order Info</h4>
+						<ul class="list">
+							
+							<li><a href="#"><span>Total Amount</span> : {{orderDetail.totalAmount}}</a></li>
+							<li><a href="#"><span>Payment method</span> : {{orderDetail.paymentMethod}}</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="details_item">
+						<h4>Shipping Address</h4>
+						<ul class="list">
+							<li><a href="#"><span>Town</span> : {{orderDetail.deliveryDetails.place}}</a></li>
+							<li><a href="#"><span>City</span> : {{orderDetail.deliveryDetails.city}}</a></li>
+							<li><a href="#"><span>Postoffice</span> : {{orderDetail.deliveryDetails.postoffice}}</a></li>
+							<li><a href="#"><span>Postcode </span> : {{orderDetail.deliveryDetails.pincode}}</a></li>
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div class="order_details_table">
+				
+						
+				
+					<h2 class="tt-center">Total:₹ {{orderDetail.totalAmount}}</h2>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Order Details Area =================-->
+
+
+
+
+
+
+      </div>
+      <a href="/"><button class="primary-btn order-submit">Home</button>
+    </div>
+
+
+
+
+  </div>
+</div>
+</div>

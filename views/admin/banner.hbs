@@ -1,0 +1,48 @@
+<div class="container-fluid pt-4 px-4">
+    <div class=" row g-4">
+
+        <div class="col-sm-12 ">
+            <a href="/admin/add-banner" class="btn btn-success ml-auto">Add</a>
+            <div class="bg-secondary rounded h-100 p-4 mt-3 ">
+                <h6 class="mb-4">Basic Table</h6>
+                <table class="table">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">offer</th>
+                            <th>Image</th>
+                            <th></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>{{#each produc}}
+                        <tr>
+                            <td scope="row">{{this.percentage}}</td>
+
+
+                            <td><img style="width: 150px;height: 50px;" src="/product-images/{{this.banner}}" alt="">
+                            </td>
+                            <td>
+                                <a href="/admin/edit-banner?id={{this._id}}" class="btn btn-info">Edit</a>
+                                <a href="/admin/delete-banner?id={{this._id}}" class="btn btn-danger"
+                                    onclick="return confirm ('Are you sure to delete ?')">Delete</a>
+                            </td>
+                            <td>
+                                {{#if this.status}}
+                                 <a href="/admin/block-banner?id={{this._id}}" class="btn btn-danger">Hide</a>
+                       
+                        {{else}}
+                         <a href="/admin/unblock-banner?id={{this._id}}" class="btn btn-info">Unhide</a>
+                       
+                        {{/if}}
+                            </td>
+                               
+
+                        </tr>
+                        
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,195 @@
+<div class="row">
+
+    <div class="container mt-5 pl-5">
+
+        <div class="col-md-6">
+            <div class="section-title text-center">
+                <h3 class="title">Your Profile</h3>
+            </div>
+
+
+
+            <div class="mt-5">
+
+                <span style="font-weight:bold;font-size:medium">Name: </span><span>{{logIn.firstName}}</span>
+
+            </div>
+            <div mt-5>
+                <span style="font-weight:bold;font-size:medium">Email: </span><span>{{logIn.email}}</span>
+            </div>
+            <div>
+                <span style="font-weight:bold;font-size:medium">Phone: </span><span>{{logIn.phoneNumber}}</span>
+            </div>
+            <div class="section-title text-center">
+                <a href="/reset-password" class="btn btn-primary ">Reset Password</a>
+                <a href="/orders" class="btn btn-primary ">Orders</a>
+                <a href="/offers" class="btn btn-primary ">Offers</a>
+            </div>
+
+            <hr>
+            {{#each adress}}
+            <div class="section-title text-center">
+                <h5 class="title">Address:{{math @index "+"1}}</h5>
+            </div>
+            <div>
+                <span style="font-weight:bold;font-size:medium">Place: </span><span>{{this.address.place}}</span>
+            </div>
+            <div>
+                <span style="font-weight:bold;font-size:medium">City: </span><span>{{this.address.city}}</span>
+            </div>
+            <div>
+                <span style="font-weight:bold;font-size:medium">House Name:
+                </span><span>{{this.address.housename}}</span>
+            </div>
+            <div>
+                <span style="font-weight:bold;font-size:medium">Post Office:
+                </span><span>{{this.address.postoffice}}</span>
+            </div>
+            <div>
+                <span style="font-weight:bold;font-size:medium">Pincode: </span><span>{{this.address.pincode}}</span>
+            </div>
+
+
+
+
+            <a href="/removeaddress" class="btn btn-danger mt-4"
+                onclick="removeAddress('{{this.address.addressId}}','{{logIn._id}}')">Delete</a>
+            {{/each}}
+
+        </div>
+        <class class="col-md-6">
+
+            <!-- Modal Button-->
+            <div class="section-title text-center">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+                    Add Address
+                </button>
+
+
+
+
+
+                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <h5 class="card-title">WALLET</h5>
+                        
+                        <p class="card-text">Total Amount:{{UserWallet.wallet}}</p>
+                        
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            {{!-- <br> --}}
+
+
+
+        </class>
+        <!-- Modal Button End-->
+
+
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/profile" method="post">
+                    <div class="col-md-12">
+                        <!-- Billing Details -->
+                        <div class="billing-details">
+                            <div class="section-title">
+                                <h3 class="title">Your Profile</h3>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Place</label>
+                                <input class="input" type="text" name="place" placeholder="Place">
+                            </div>
+                            <div class="form-group">
+                                <label for="">City</label>
+                                <input class="input" type="text" name="city" placeholder="City">
+                            </div>
+                            <div class="form-group">
+                                <label for="">House Name</label>
+                                <input class="input" type="text" name="housename" placeholder="House Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Post office</label>
+                                <input class="input" type="text" name="postoffice" placeholder="Postoffice">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Pincode</label>
+                                <input class="input" type="number" name="pincode" placeholder="Pincode">
+                            </div>
+
+
+                            {{!-- <input class="input" type="text" name="userId" value="{{user._id}}" hidden> --}}
+                            <button type="submit" class="primary-btn order-submit">Submit</button>
+
+
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+
+
+
+                    ...
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Modal End -->
+
+<script>
+    function removeAddress(addressId, userId) {
+        console.log(addressId, userId)
+        $.ajax({
+            url: '/removeaddress',
+            data: {
+                addressId: addressId,
+                userId: userId
+            },
+            method: 'post',
+            success(response) {
+                alert('conform')
+                location.reload()
+            }
+        })
+
+    }
+
+</script>

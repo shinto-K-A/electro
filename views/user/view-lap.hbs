@@ -1,0 +1,88 @@
+<div class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+
+			<div class="col-md-12">
+				<div class="section-title text-center">
+					<h3 class="title">Related Products</h3>
+				</div>
+			</div>
+			{{#each products}}
+
+			<!-- product -->
+			<div class="col-md-3 col-xs-6">
+				<div class="product">
+					<div class="product-img" >
+						<a href="/singleproduct?id={{this._id}}">
+							<img src="/product-images/{{this.image}}" alt="" style="height: 250px;width:250px">
+							<div class="product-label">
+								<span class="sale">-{{this.percentage}}%</span>
+							</div>
+						</a>
+					</div>
+					<div class="product-body">
+						<p class="product-category">Category</p>
+						<h3 class="product-name"><a href="#">{{this.product}}</a></h3>
+						<h4 class="product-price">${{this.newprice}}.00 <del
+								class="product-old-price">${{this.oldprice}}.00</del></h4>
+						<div class="product-rating">
+						</div>
+						<div class="product-btns">
+							<button class="add-to-wishlist" onclick="wishlist('{{this._id}}')"><i class="fa fa-heart-o"></i><span class="tooltipp">add
+									to
+									wishlist</span></button>
+							<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add
+									to
+									compare</span></button>
+							<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick
+									view</span></button>
+						</div>
+					</div>
+					<div class="add-to-cart">
+						<button class="add-to-cart-btn" onclick="addToCart('{{this._id}}')"><i class="fa fa-shopping-cart"></i> add to cart</button>
+					</div>
+				</div>
+
+
+			</div>
+
+
+			{{/each}}
+
+		</div>
+	</div>
+</div>
+<script>
+		function addToCart(proId) {
+
+			$.ajax({
+				url: '/add-to-cart/' + proId,
+				method: 'get',
+				success: (response) => {
+					let count=$('#cart-count').html()
+					count=parseInt(count)+1
+					$('#cart-count').html(count)
+
+
+				}
+			})
+
+		}
+		function wishlist(proId) {
+
+			$.ajax({
+				url: '/add-to-wishlist/' + proId,
+				method: 'get',
+				success: (response) => {
+					let count=$('#wish-count').html()
+					count=parseInt(count)+1
+					$('#wish-count').html(count)
+
+
+				}
+			})
+
+		}
+	</script>

@@ -1,0 +1,263 @@
+<body>
+  
+    
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Data Tables -->
+     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+ 
+     
+ 
+
+
+
+
+
+  <!-- Sale & Revenue Start -->
+  <div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+      <div class="col-sm-6 col-xl-3">
+        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+          <i class="fa fa-chart-line fa-3x text-primary"></i>
+          <div class="ms-3">
+            <p class="mb-2">Total Orders</p>
+            <h6 class="mb-0">{{totalOrders}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+          <i class="fa fa-chart-bar fa-3x text-primary"></i>
+          <div class="ms-3">
+            <p class="mb-2">Total Users</p>
+            <h6 class="mb-0">{{TotalUsers}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+          <i class="fa fa-chart-area fa-3x text-primary"></i>
+          <div class="ms-3">
+            <p class="mb-2">Today Products</p>
+            <h6 class="mb-0">{{totalProducts}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+          <i class="fa fa-chart-pie fa-3x text-primary"></i>
+          <div class="ms-3">
+            <p class="mb-2">Total Sales</p>
+            <h6 class="mb-0">{{salesData}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Sale & Revenue End -->
+
+
+  <!-- Sales Chart Start -->
+  <div class="container-fluid pt-4 px-4">
+    <div class="row g-4">  
+      <div class="col-sm-12 col-xl-6">
+              <div class="row my-3">
+          <div class="col-md-12">
+            <div class="flot-chart-wrapper">
+              <div>
+                <canvas id="myChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row my-3">
+          <div class="col-md-12">
+            <div class="flot-chart-wrapper">
+              <div>
+                <canvas id="MyChart"></canvas>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row my-3">
+          <div class="col-md-12">
+            <div class="flot-chart-wrapper">
+              <div>
+                <canvas id="MYCHART"></canvas>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+  
+  
+  
+  
+  
+      </div>
+    </div>
+  </div>
+  <!-- Sales Chart End -->
+
+
+  <!-- Recent Sales Start -->
+  <div class="container-fluid pt-4 px-4">
+     {{!-- <div class="col-md-4">
+        <button class="btn btn-danger text-white border-0 shadow-lg mt-1" id="excelExport"
+          style="background-color: rgb(54, 162, 235);">Export to Excel</button>
+        <button class="btn btn-danger text-white border-0 shadow-lg mt-1" id="pdfExport"
+          style="background-color: rgb(54, 162, 235);">Export to pdf</button>
+      
+      
+      </div> --}}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+        <button class="btn btn-primary" onclick="generatePDF()">PDF</button>
+      
+    <div class="bg-secondary text-center rounded p-4">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        
+        <h6 class="mb-0">Recent Salse</h6>
+        <a href="">Show All</a>
+      </div>
+      <div class="table-responsive" id="tableSalesReport"  >
+        
+        <table class="table text-start align-middle table-bordered table-hover mb-0"  >
+          <thead>
+            <tr class="text-start">
+               <th scope="col" >No</th>
+              <th scope="col">Date</th>
+              <th scope="col">Total Amount</th>
+              <th scope="col">Count</th>
+            </tr>
+          </thead>
+          {{#each monthly}}
+          <tbody>
+            
+            <tr>
+              
+              <td>{{math @index '+'1}}</td>
+              <td>{{this._id}}</td>
+              <td>{{this.totalAmount}}</td>
+              <td>{{this.count}}</td>
+            </tr>
+           
+           
+          </tbody>
+           {{/each}}
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Sales End -->
+ 
+
+  <!-- Widgets Start -->
+  <!-- Data Table -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js">
+  </script>
+
+
+</body>
+
+<script type="text/javascript">
+
+$.noConflict();
+
+$(document).ready(function(){
+    $('#tableSalesReport').DataTable();
+});
+
+</script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+ 
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [{{#each daily}}'{{_id}}',{{/each}}],
+      datasets: [{
+        label: '# of Votes',
+        data: [{{#each daily}} {{totalAmount}},{{/each}}],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+const cta = document.getElementById('MyChart');
+  new Chart(cta, {
+    type: 'bar',
+    data: {
+      labels: [{{#each yearly}}'{{_id}}',{{/each}}],
+      datasets: [{
+        label: '# of Votes',
+        data: [{{#each yearly}} {{totalAmount}},{{/each}}],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+
+const ct = document.getElementById('MYCHART');
+  new Chart(ct, {
+    type: 'bar',
+    data: {
+      labels: [{{#each monthly}}'{{_id}}',{{/each}}],
+      datasets: [{
+        label: '# of Votes',
+        data: [{{#each monthly}} {{totalAmount}},{{/each}}],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+function generatePDF() {
+        const element = document.getElementById('tableSalesReport');
+		element.style.width = '900px';
+		element.style.height = '900px';
+		let opt = {
+			margin: 10,
+			filename: 'ecomerce.pdf',
+			image:{type:'jpeg',quality:0.98},
+			html2canvas :{scale:1},
+			jsPDF:{unit:'mm',orientation:'landscape'}
+		}
+        html2pdf().set(opt)
+            .from(element)
+            .save();
+           }
+
+
+</script>
+
+
+
+
+
+
+
+
+<!-- Widgets End -->

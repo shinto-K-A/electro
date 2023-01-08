@@ -1,0 +1,56 @@
+<div class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<div class="col-sm-12 col-xl-10">
+				<div class="bg-secondary rounded h-100 p-4">
+					<h6 class="mb-4">Color Table</h6>
+					<table class="table table-dark">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th>Address</th>
+								<th scope="col">Payment</th>
+								<th scope="col">Amount</th>
+								<th scope="col">Status</th>
+								<th scope="col">view</th>
+								<th scope="col">Options</th>
+								
+								
+							</tr>
+						</thead>
+						<tbody>
+							{{#each orders}}
+							<tr>
+								<th scope="row">{{math @index '+'1}}</th>
+								<th>{{this.deliveryDetails.city}}<br>{{this.deliveryDetails.place}}<br>{{this.deliveryDetails.housename}}<br>{{this.deliveryDetails.postoffice}},{{this.deliveryDetails.pincode}}</th>
+								<td>{{this.paymentMethod}}</td>
+								<td>{{this.totalAmount}}</td>
+								<td>{{this.status}}</td>
+								<td><a class="btn btn-primary" href="/view-order-products?id={{this._id}}">View</a></td>
+								 {{#isEqual this.status 'canceled'}}
+								<td><h6>CANCELLED</h6></td>
+                                {{/isEqual}}
+								 {{#isEqual this.status 'placed'}}
+								 <td><a class="btn btn-danger" href="/cancel-order-products?id={{../this._id}}">Cancel</a></td>
+								
+                                {{/isEqual}}
+								{{#isEqual this.status 'delivered'}}
+								<td><a class="btn btn-info" href="/return-order-products?id={{../this._id}}">Return</a></td>
+								{{/isEqual}}
+								{{#isEqual this.status 'return'}}
+								<td><h6>RETURNED</h6></td>
+								{{/isEqual}}
+								
+                               
+							</tr>
+							{{/each}}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

@@ -1,0 +1,201 @@
+<body>
+
+
+    <div class="ml-7 p-3 mb-2  row d-flex justify-content-center">
+        <form class="col-md-6" action="/admin/add-product" method="post" enctype="multipart/form-data">
+            <div class="form-group mt-3">
+                <label for="exampleInputEmail1">Product Name</label>
+                <input type="text" name="product" class="form-control  bg-white text-black" id="pname"
+                    aria-describedby="emailHelp" placeholder="Product name" onkeypress="nameCheck()">
+                <span id="nerror" style="color: rgb(213, 10, 10);"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="exampleInputEmail1">About</label>
+                <input type="text" name="about" class="form-control bg-white text-black" id="about"
+                    aria-describedby="emailHelp" placeholder="About" onkeypress="aboutCheck()">
+                <span id="aerror" style="color: rgb(213, 10, 10);"></span>
+            </div>
+
+            {{!-- category input --}}
+            <div class="form-group mt-3">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Categorys</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01" name="category">
+                        <option selected>Choose...</option>
+                        {{#each response}}
+                        <option value="{{this.category}}" text="dark">{{this.category}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+
+            </div>
+
+            <div class="form-group mt-3">
+                <label for="exampleInputEmail1">New Price</label>
+                <input type="number" name="newprice" class="form-control bg-white text-black" id="newPrice"
+                    aria-describedby="emailHelp" placeholder="New Price" onkeypress="newpriceCheck()">
+                <span id="perror" style="color: rgb(213, 10, 10);"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="exampleInputEmail1">Old Price</label>
+                <input type="number" name="oldprice" class="form-control bg-white text-black" id="oldPrice"
+                    aria-describedby="emailHelp" placeholder="Old Price" onkeyup="priceCheck()">
+                <span id="price-error" style="color: red;"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="exampleInputEmail1">Offer Percentage</label>
+                <input type="number" name="percentage" class="form-control  bg-white text-black" id="offer"
+                    aria-describedby="emailHelp" placeholder="Offer Percentage" onkeypress="offerCheck()"><button
+                    type="button" class="btn btn-info" onclick="Percentage()">Fill</button>
+                <span id="oerror" style="color: rgb(213, 10, 10);"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="exampleInputEmail1">Stock Count</label>
+                <input type="number" name="stock" class="form-control bg-white text-black" id="stock"
+                    aria-describedby="emailHelp" placeholder="Stock count" onkeypress="stockCheck()">
+                <span id="serror" style="color: rgb(213, 10, 10);"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="exampleFormControlFile1">Example file input</label>
+                <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
+                
+            </div>
+
+            <div class="form-group mt-3">
+                <label for="exampleFormControlFile1">Example file input</label>
+                <input type="file" name="image1" class="form-control-file" id="exampleFormControlFile1">
+            </div>
+            <div class="form-group mt-3">
+                <label for="exampleFormControlFile1">Example file input</label>
+                <input type="file" name="image2" class="form-control-file" id="exampleFormControlFile1">
+            </div>
+
+            <div class="form-group mt-3">
+                <label for="exampleFormControlFile1">Example file input</label>
+                <input type="file" name="image3" class="form-control-file" id="exampleFormControlFile1"
+                    onchange="viewImage(event)">
+                    
+            </div>
+            <div>
+                 <span id="form-error" style="color: rgb(10, 236, 52);"></span>
+            </div>
+           
+            <button type="submit" class="btn btn-primary mt-3" onclick="return validateProducts()">Submit</button>
+        </form>
+
+    </div>
+    <script>
+        function Percentage() {
+            oldPrice=document.getElementById('oldPrice').value;
+            newPrice=document.getElementById('newPrice').value;
+            offerPrice=(newPrice-oldPrice)/oldPrice*100
+            
+            exactPrice=Math.abs(offerPrice)
+        
+            finalOffer=Math.round(exactPrice)
+            
+            document.getElementById('offer').value=finalOffer
+        }
+
+        function priceCheck() {
+            console.log('hellolllllllllllllllllllllllllllllllllllllllllllll');
+            var priceError = document.getElementById("price-error")
+            var price1 = document.getElementById("newPrice").value;
+            var price2 = document.getElementById("oldPrice").value;
+            if (price1 > price2) {
+                priceError.innerHTML = 'old price needs to be greater';
+                return false;
+            }
+
+            else {
+                priceError.innerHTML = '';
+                return true;
+            }
+        }
+        function nameCheck() {
+            var error = document.getElementById("nerror")
+            var product = document.getElementById("pname").value;
+            if (product.length == 0) {
+                error.innerHTML = "Product Name Required";
+                return false;
+            }
+
+            else {
+                error.innerHTML = '';
+                return true;
+            }
+        }
+        function aboutCheck() {
+            var error = document.getElementById("aerror")
+            var product = document.getElementById("about").value;
+            if (product.length == 0) {
+                error.innerHTML = "About Required";
+                return false;
+            }
+
+            else {
+                error.innerHTML = '';
+                return true;
+            }
+        }
+        function newpriceCheck() {
+            var error = document.getElementById("perror")
+            var product = document.getElementById("newPrice").value;
+            if (product.length == 0) {
+                error.innerHTML = "Price Required";
+                return false;
+            }
+
+            else {
+                error.innerHTML = '';
+                return true;
+            }
+        }
+        function offerCheck() {
+            var error = document.getElementById("oerror")
+            var product = document.getElementById("offer").value;
+            if (product.length == 0) {
+                error.innerHTML = "Offer Required";
+                return false;
+            }
+
+            else {
+                error.innerHTML = '';
+                return true;
+            }
+        }
+        function stockCheck() {
+            var error = document.getElementById("serror")
+            var product = document.getElementById("stock").value;
+            if (product.length == 0) {
+                error.innerHTML = "Stock Required";
+                return false;
+            }
+
+            else {
+                error.innerHTML = '';
+                return true;
+            }
+        }
+        function validateProducts() {
+            var submitError = document.getElementById("form-error")
+            if (!stockCheck() || !offerCheck() || !newpriceCheck() || !aboutCheck() || !nameCheck() || !priceCheck()) {
+
+                submitError.innerHTML = 'Please fill the fields to submit';
+                //setTimeout(function () { submitError.style.display = 'none'; }, 4000)
+                return false;
+            }
+            else {
+                submitError.innerHTML = '';
+            }
+
+        }
+        
+
+    </script>
+
+    <script src="/javascripts/validation.js"></script>
+</body>

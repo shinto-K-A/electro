@@ -1,0 +1,32 @@
+<div class="container-fluid pt-4 px-4">
+  <div class=" row g-4">
+
+    <div class="col-md-12 ">
+      {{#each coupen}}
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          
+          <h6 class="card-subtitle mb-2 text-muted">{{this.name}}</h6>
+          <p class="card-text">CODE:{{this.code}}</p>
+          <p class="card-text">EXP DATE:{{this.endingdate}}</p>
+          <p class="card-text">MIN AMOUNT:{{this.minAmount}}</p>
+          <p class="card-text">MAX AMOUNT:{{this.maxAmount}}</p>
+         
+        </div>
+      </div>
+      {{/each}}
+      <div><span class="text-danger">{{oferEror}}</span></div>
+     
+      <!-- Button trigger modal -->
+      <a href="/admin/ad-coupon" class="btn btn-primary" >
+        ADD
+      </a>
+
+      <!-- Modal -->
+      
+
+
+
+    </div>
+  </div>
+</div>

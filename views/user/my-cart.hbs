@@ -1,0 +1,169 @@
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="section-title">
+                    <h4 class="title">My Cart</h4>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Item</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each products}}
+                        <tr>
+                            
+                            <td scope="row"><img style="width: 50px;height: 50px;" src="/product-images/{{this.product.image}}" alt=""></td>
+                            <td>{{this.product.product}}</td>
+                            <td>{{this.product.newprice}}</td>
+                            
+                            <td>
+                                <button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',-1)" >-</button>
+                                <span id="{{this.product._id}}">{{this.quantity}}</span>
+                                <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1)">+</button>
+
+                            </td>
+                            <td>  <button onclick="removeItem('{{this._id}}','{{this.product._id}}','{{this.product.product}}')"><i class="fa fa-trash"></i><span class="tooltipp">Remove</span></button></td>
+
+
+                        </tr>
+                        {{/each}}
+                         
+                    </tbody>
+                    
+                </table>
+                <hr>
+                <div class="ml-auto">
+                    <h4 class="float-left">TOTAL PRICE:<span id="total">{{totalValue}}</span></h4>
+                    <a href="/place-order" class="float-right btn btn-success">Place Order</a>
+                </div>
+                 
+
+                        
+               
+                
+
+            </div>
+             
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <script>
+        function changeQuantity(cartId,proId,userId,count){
+            let quantity=parseInt(document.getElementById(proId).innerHTML)
+            count=parseInt(count)
+            $.ajax({
+                url:'/change-product-quantity',
+                data:{
+                    user:userId,
+                    cart:cartId,
+                    product:proId,
+                    count:count,
+                    quantity:quantity
+                },
+                method:'post',
+                success:(response)=>{
+                    if(response.removeProduct){
+                        alert('Product Removed from cart')
+                        location.reload()
+                    }
+                    else{
+                        document.getElementById(proId).innerHTML=quantity+count
+                        document.getElementById('total').innerHTML=response.total
+                    }
+                    
+                }
+
+            })
+        }
+         function removeItem(cartId,proId,proModel){
+        $.ajax({
+          url:'/remove-item',
+          data:{
+            cart:cartId,
+            product:proId
+          },
+          method:'post',
+          success:(response)=>{
+            location.reload()
+          }
+        })
+     
+
+    }
+    </script>
+
+
+
+
+
+    {{!-- <div class="cart-dropdown">
+        <div class="cart-list">
+            <div class="product-widget">
+                <div class="product-img">
+                    <img src="media/img/product01.png" alt="">
+
+                </div>
+                <div class="product-body">
+                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                    <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
+                </div>
+                <button class="delete"><i class="fa fa-close"></i></button>
+            </div>
+
+            <div class="product-widget">
+                <div class="product-img">
+                    <img src="media/img/product02.png" alt="">
+                </div>
+                <div class="product-body">
+                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                    <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
+                </div>
+                <button class="delete"><i class="fa fa-close"></i></button>
+            </div>
+        </div>
+        <div class="cart-summary">
+            <small>3 Item(s) selected</small>
+            <h5>SUBTOTAL: $2940.00</h5>
+        </div>
+        <div class="cart-btns">
+            <a href="#">View Cart</a>
+            <a href="#">Checkout <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div> --}}
+
+
+
+
+     {{!-- <div class="products-widget-slick" data-nav="#slick-nav-3">
+                    <div>
+                        <!-- product widget -->
+                        <div class="product-widget">
+
+                            <div class="product-body">
+                                <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add
+                                        to
+                                        wishlist</span></button>
+                                <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add
+                                        to
+                                        compare</span></button>
+                                <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick
+                                        view</span></button>
+                            </div>
+                        </div>
+                        <!-- /product widget -->
+
+
+
+
+                    </div>
+                </div> --}}

@@ -1,0 +1,38 @@
+<!-- Form Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Form</h6>
+                <form action="/admin/add-categorys" method="post" >
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Category</label>
+                        <input type="text" class="form-control bg-white text-white" name="category" id="exampleInputEmail1"
+                            aria-describedby="emailHelp">
+                    </div>
+                     <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label text-white">Existing List</label>
+                    </div>
+                   
+                    {{#each categor}}
+                    <div class="mb-3">
+                        <table>
+                            <tr>
+                                <label for="exampleInputEmail1" class="form-label">{{this.category}}</label>
+                                <td>
+                                <td><a href="/admin/edit-category?id={{this._id}}" class="btn btn-info">Edit</a></td>
+                                <td><a href="/admin/delete-category/{{this._id}}" class="btn btn-danger">Delete </a>
+                                </td>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    {{/each}}
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+ 

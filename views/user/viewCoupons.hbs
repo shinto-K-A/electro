@@ -1,0 +1,24 @@
+<div class="row">
+  {{#each coupen}}
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">{{this.name}}</h3>
+        <p class="card-text">Exp Date: {{this.endingdate}}</p>
+        <h5 class="text-success">Code: {{this.code}}</h5>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+ 
+</div>
+
+{{!-- {{#each coupen}}
+<div class="card" style="width: 18rem;"> --}}
+  {{!-- <img src="..." class="card-img-top" alt="..."> --}}
+  {{!-- <div class="card-body">
+    <h4 class="card-title" class="text-primary">{{this.name}}</h4>
+    <h4 class="card-text" class="text-success">{{this.code}}</h4>
+  </div>
+</div>
+{{/each}} --}}

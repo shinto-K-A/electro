@@ -1,0 +1,65 @@
+
+<div class="ml-7 p-3 mb-2 bg-dark text-white row d-flex justify-content-center">
+    <form class="col-md-6" action="/admin/edit-product/{{product._id}}" method="post" enctype="multipart/form-data">
+    <div class="form-group mt-3">
+        <label for="exampleInputEmail1">Product Name</label>
+        <input type="text"  name="product" class="form-control p-3 mb-2 bg-secondary text-white" id="exampleInputEmail1" aria-describedby="emailHelp"
+            placeholder="Product" value="{{product.product}}">
+    </div>
+    <div class="form-group mt-3">
+        <label for="exampleInputPassword1">About</label>
+        <input type="text" name="about" class="form-control p-3 mb-2 bg-secondary text-white" id="exampleInputPassword1" value="{{product.about}}" placeholder="About">
+    </div>
+    <div class="form-group mt-3">
+        <label for="exampleInputEmail1">New Price</label>
+        <input type="number"  name="newprice" class="form-control p-3 mb-2 bg-secondary text-white" id="exampleInputEmail1" aria-describedby="emailHelp"
+            placeholder="New Price" value="{{product.newprice}}">
+    </div>
+    <div class="form-group mt-3">
+        <label for="exampleInputEmail1">Old Price</label>
+        <input type="number"  name="oldprice" class="form-control p-3 mb-2 bg-secondary text-white" id="exampleInputEmail1" aria-describedby="emailHelp"
+            placeholder="Old Price" value="{{product.oldprice}}">
+    </div>
+     <div class="form-group mt-3">
+        <label for="exampleInputEmail1">Offer Percentage</label>
+        <input type="number"  name="percentage" class="form-control p-3 mb-2 bg-secondary text-white" id="exampleInputEmail1" aria-describedby="emailHelp"
+            placeholder="Offer Percentage" value="{{product.percentage}}">
+    </div>
+     <img src="/product-images/{{product.image}}" style="width: 100px; height:auto" id="imgView">
+    <div class="form-group mt-3">
+        <label for="exampleFormControlFile1">Example file input</label>
+        <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1" onchange="viewImage(event)">
+    </div>
+
+
+
+
+    <img src="/product-images/{{product.image1}}" style="width: 100px; height:auto" id="imgView">
+    <div class="form-group mt-3">
+        <label for="exampleFormControlFile1">Example file input</label>
+        <input type="file" name="image2" class="form-control-file" id="exampleFormControlFile1" onchange="viewImage(event)">
+    </div>
+    <img src="/product-images/{{product.image2}}" style="width: 100px; height:auto" id="imgView">
+    <div class="form-group mt-3">
+        <label for="exampleFormControlFile1">Example file input</label>
+        <input type="file" name="image3" class="form-control-file" id="exampleFormControlFile1" onchange="viewImage(event)">
+    </div>
+     <img src="/product-images/{{product.image3}}" style="width: 100px; height:auto" id="imgView">
+    <div class="form-group mt-3">
+        <label for="exampleFormControlFile1">Example file input</label>
+        <input type="file" name="image3" class="form-control-file" id="exampleFormControlFile1" onchange="viewImage(event)">
+    </div>
+
+
+
+
+
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+</div>
+<script>
+    function viewImage(event){
+        document.getElementById('imgView').src=URL.createObjectURL(event.target.files[0])
+    }
+</script>
