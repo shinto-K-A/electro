@@ -2,8 +2,8 @@
 
 
 
-    <!-- Table Start -->
-    <div class="container-fluid pt-4 px-4">
+<!-- Table Start -->
+<div class="container-fluid pt-4 px-4">
     <div class=" row g-4">
 
         <div class="col-sm-12 ">
@@ -30,12 +30,12 @@
                             <td>{{this.oldprice}}</td>
                             <td>{{this.newprice}}</td>
                             <td><img style="width: 50px;height: 50px;" src="/product-images/{{this.image}}" alt="">
-                            <img style="width: 50px;height: 50px;" src="/product-images/{{this.image1}}" alt="">
-                            <img style="width: 50px;height: 50px;" src="/product-images/{{this.image2}}" alt="">
-                            <img style="width: 50px;height: 50px;" src="/product-images/{{this.image3}}" alt="">
+                                <img style="width: 50px;height: 50px;" src="/product-images/{{this.image1}}" alt="">
+                                <img style="width: 50px;height: 50px;" src="/product-images/{{this.image2}}" alt="">
+                                <img style="width: 50px;height: 50px;" src="/product-images/{{this.image3}}" alt="">
                             </td>
                             <td>
-                                <a href="/admin/edit-product?id={{this._id}}"  class="btn btn-info">Edit</a>
+                                <a href="/admin/edit-product?id={{this._id}}" class="btn btn-info">Edit</a>
                                 <a href="/admin/delete-product/{{this._id}}" class="btn btn-danger"
                                     onclick="return confirm ('Are you sure to delete ?')">Delete </a>
                             </td>
@@ -46,4 +46,14 @@
                 </table>
             </div>
         </div>
+    </div>
+    <div class="product__pagination mt-5 align-self-end">
+        {{#each pageCount}}
+        <a href="/admin/view?id={{this}}"
+                class="text-white"><button class="btn btn-secondary rounded">{{this}}</button></a>
+        {{/each}}
+        {{!-- {{#unless (next to last page)}} --}}
+        <a href="#"><i class="fa-sharp fa-solid fa-circle-chevron-right text-muted"></i></a>
+        {{!-- {{/unless}} --}}
+                  
     </div>

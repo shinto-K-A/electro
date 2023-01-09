@@ -8,12 +8,16 @@ const Client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWI
 var objectId = require('mongodb').ObjectId
 const Razorpay = require('razorpay')
 const { resolve } = require('path')
-var instance = new Razorpay({
-    key_id: 'rzp_test_gFSzKrbiJVMqDa',
-    key_secret: 'xyM3duBSdGj0LM5YfK4aCj5D'
-})
-var paypal = require('paypal-rest-sdk');
 
+var instance = new Razorpay({ 
+    key_id: 'rzp_test_gFSzKrbiJVMqDa',
+    key_secret: 'xyM3duBSdGj0LM5YfK4aCj5D' })
+var paypal = require('paypal-rest-sdk');
+paypal.configure({
+    'mode': 'sandbox', //sandbox or live 
+    'client_id': 'AXWaSUDse_23OjiACaKxoX6FatSRmciMRzauilfQrFJfjb9vCBXe6EoenMi5tOeMnf19cDR9BQqC5QSJ', // please provide your client id here 
+    'client_secret': 'EOMDDPfwS-uryZD3FWObPXFP-gcIVZB9kzbuxm-UfQn7lCsaLR67vEQi7KKRe-KzmgHJbZYQYUQQcChQ' // provide your client secret here 
+  });
 
 module.exports = {
     doSignup: (userData) => {
@@ -74,6 +78,7 @@ module.exports = {
 
                 response.status = true
                 response.user = user
+            console.log(userData.phone,'ttttttttttttttyyyyyyyyyyyyyy');
                 Client.verify.services(process.env.TWILIO_SERVICE_ID)
                     .verifications
                     .create({ to: `+91${userData.phone}`, channel: 'sms' })
@@ -320,7 +325,8 @@ module.exports = {
             }
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
                 db.get().collection(collection.CART_COLLECTION).deleteOne({ user: objectId(order.userId) })
-                resolve(response)
+
+                resolve(response.insertedId)
             })
 
         })
@@ -364,6 +370,7 @@ module.exports = {
 
     },
     generateRazorpay: (orderId, total) => {
+        console.log(orderId,"ooooooooooooooooooooooooooooooooo");
         return new Promise(async (resolve, reject) => {
             var order = await instance.orders.create({
                 amount: total * 100,
@@ -381,15 +388,18 @@ module.exports = {
 
     },
     verifyPayment: (details) => {
-        console.log(details);
+        //console.log(details,"Lllllllllllllllllllllllll",details['payment[razorpay_order_id]'],);
         return new Promise((resolve, reject) => {
             const crypto = require('crypto')
             let hmac = crypto.createHmac('sha256', 'xyM3duBSdGj0LM5YfK4aCj5D')
             hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]'])
             hmac = hmac.digest('hex')
+            //console.log(hmac,"uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",details['payment[razorpay_signature]']);
             if (hmac == details['payment[razorpay_signature]']) {
+                console.log("iam hereeeeeeeeeeeeeeeee");
                 resolve()
             } else {
+                console.log("iam nottttttttttttttttttttttttttttttttttttt hereeeeeeeeeeeeeeeee");
                 reject()
             }
         })
@@ -559,7 +569,9 @@ module.exports = {
         })
     },
     createPay: (payment) => {
+        //console.log(payment,'ppppaaaymmmeeemtttttt');
         return new Promise((resolve, reject) => {
+            console.log(payment.amount,'ppppaaaymmmeeemtttttttttttttttttttttttt');
             paypal.payment.create(payment, function (err, payment) {
                 if (err) {
                     reject(err);
@@ -828,7 +840,36 @@ module.exports = {
                 resolve(response)
             })
         })
-    }
+    },
+    paginatorCount:(count)=>{
+        return new Promise((resolve, reject) => {
+          pages = Math.ceil(count/5 )
+          let arr = []
+          for (let i = 1; i <= pages; i++) {
+              arr.push(i)
+          }
+          resolve(arr)
+         })
+      },
+      getTenProducts: (Pageno) => {
+        return new Promise(async (resolve, reject) => {
+            let val = (Pageno - 1) * 5
+            let AllProducts_ = await db.get().collection(collection.ORDER_COLLECTION)
+                .find().sort({ _id: -1 }).skip(val).limit(5).toArray()
+    
+            resolve(AllProducts_)
+        })
+    },
+getFiveProducts: (Pageno) => {
+    return new Promise(async (resolve, reject) => {
+        let val = (Pageno - 1) * 5
+        let AllProducts_ = await db.get().collection(collection.PRODUCT_COLLECTION)
+            .find().skip(val).limit(5).toArray()
+
+        resolve(AllProducts_)
+        })
+    }
+
     
 
 

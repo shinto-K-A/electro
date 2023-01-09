@@ -236,25 +236,28 @@ module.exports = {
         
         userHelpers.placeOrder(req.body, products, totalPrice).then((orderId) => {
             
-            req.session.orderId=orderId.insertedId
-            console.log(req.session.orderId,'jjjjjjjjjkllllllllllllll');
+            req.session.orderId=orderId
+            //console.log(req.session.orderId,'jjjjjjjjjkllllllllllllll');
             if (req.body['paymentMethod'] == 'COD') {
                 res.json({ codSuccess: true })
             }
             else if (req.body['paymentMethod'] === 'ONLINE') {
+                //console.log(orderId,totalPrice,'generateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
                 userHelpers.generateRazorpay(orderId, totalPrice).then((response) => {
+                    console.log(response,'raaaaaaaaaaaaaaaaaaaaa');
                     response.razorPay = true
                     res.json(response)
 
                 })
             } else if (req.body['paymentMethod'] === 'PAYPAL') {
+                console.log("fcghjnkmmmmmmmmmmmmmmmmmmmmmmmmmmmmlm,",totalPrice);
                 var payment = {
                     "intent": "sale",
                     "payer": {
                         "payment_method": "paypal"
                     },
                     "redirect_urls": {
-                        "return_url": "http://shinto.cf/success",
+                        "return_url": "http://localhost:3000/success",
                         "cancel_url": "http://shinto.cf"
                     },
                     "transactions": [{
@@ -262,16 +265,19 @@ module.exports = {
                             "currency": "USD",
                             "total": totalPrice
                         },
-                        "description": orderId
+                        "description":orderId
                     }]
                 };
 
                 userHelpers.createPay(payment).then((transaction) => {
+                    //console.log(payment,"-------------",transaction);
                     var id = transaction.id;
                     var links = transaction.links;
                     var counter = links.length;
                     while (counter--) {
-                        if (links[counter].rel == 'approval_url') {
+                        console.log(orderId,'counterrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+                        if (links[counter].rel === 'approval_url') {
+                            //console.log(transaction,'transactionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
                             transaction.pay = true
                             transaction.linkto = links[counter].href
                             transaction.orderId = orderId
@@ -325,6 +331,7 @@ module.exports = {
     verifypaymentPost: (req, res) => {
         //console.log(req.body);
         userHelpers.verifyPayment(req.body).then(() => {
+            console.log(req.body['order[receipt]'],"------------------------------",req.body);
             userHelpers.changePaymentStatus(req.body['order[receipt]']).then(() => {
 
                 res.json({ status: true })

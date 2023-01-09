@@ -202,7 +202,7 @@
 				method: 'post',
 				data: $('#checkout-form').serialize(),
 				success: (response) => {
-					alert('conform')
+					alert('confirm')
 					if (response.codSuccess) {
 						location.href = '/success'
 					}
@@ -217,6 +217,8 @@
 			})
 		})
 		function razorpayPayment(order) {
+			console.log(order,'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO',order.id)
+			
 			var options = {
 				"key": "rzp_test_gFSzKrbiJVMqDa", // Enter the Key ID generated from the Dashboard
 				"amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -299,21 +301,21 @@
 							document.getElementById('errorMsg').innerHTML = response.invalidDateMsg
 							setTimeout(()=>{
 								response.invalidDateMsg=null
-								//location.reload()
+								setTimeout(location.reload(),4000)
 							},3000)
 						}
 						else if (response.minAmount) {
 							document.getElementById('errorMsg').innerHTML = response.minAmountMsg
 							setTimeout(()=>{
 								response.minAmountMsg=null
-								//location.reload()
+								setTimeout(location.reload(),4000)
 							},3000)
 						}
 						else if (response.invalidCoupon) { 
 							document.getElementById('errorMsg').innerHTML = response.invalidCouponMsg
 							setTimeout(()=>{
 								response.invalidCouponMsg=null
-								//location.reload()
+								setTimeout(location.reload(),4000)
 							},3000) }
 
 

@@ -57,3 +57,11 @@
 		</div>
 	</div>
 </div>
+<div class="product__pagination mt-5">
+            {{#each pageCount}}
+            <button class="btn btn-secondary rounded"><a href="/admin/orders?id={{this}}" class="text-white">{{this}}</a></button>    
+						{{/each}}
+						  {{!-- {{#unless (next to last page)}} --}}
+            <a href="#"><i class="fa-sharp fa-solid fa-circle-chevron-right text-muted" ></i></a>
+						     {{!-- {{/unless}} --}}
+          </div>

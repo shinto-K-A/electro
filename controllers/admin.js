@@ -50,15 +50,40 @@ module.exports = {
 
 
     },
-    viewProduct: function (req, res, next) {
+    viewProduct:async function (req, res, next) {
+
+
         res.header("Cache-Control", "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0")
-        productHelper.getAllproducts().then((products) => {
-            res.render('admin/view-products', { layout: 'admin-layout', products })
+       await productHelper.getAllproducts().then(async(products) => {
+            let count = 0
+            products.forEach(products => {
+        count++
+    });
+    let pageCount = await userHelpers.paginatorCount(count)
+    products = await userHelpers.getFiveProducts(req.query.id)
+
+    if (req.query.minimum) {
+        let minimum = req.query.minimum.slice(1)
+        let maximum = req.query.maximum.slice(1)
+        let arr = []
+        products = await productHelper.getAllproducts()
+
+        products.forEach(products => {
+            
+                arr.push(products)
+            
+        });
+        products = arr;
+    }
+            
+        
+            res.render('admin/view-products', { layout: 'admin-layout', products,pageCount,count })
         })
     },
     addproductGet: async (req, res) => {
         res.header("Cache-Control", "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0")
         await productHelper.getAllCategories().then((response) => {
+
             res.render('admin/add-product', { layout: 'admin-layout', response })
         })
     },
@@ -219,9 +244,37 @@ module.exports = {
         
     },
     orderGet: async (req, res) => {
-        let orders = await productHelper.getAllOrders()
+        
 
-        res.render('admin/all-orders', { layout: 'admin-layout', orders })
+
+
+
+
+
+
+        let orders = await productHelper.getAllOrders()
+        let count = 0
+        orders.forEach(orders => {
+        count++
+    });
+    let pageCount = await userHelpers.paginatorCount(count)
+    orders = await userHelpers.getTenProducts(req.query.id)
+
+    if (req.query.minimum) {
+        let minimum = req.query.minimum.slice(1)
+        let maximum = req.query.maximum.slice(1)
+        let arr = []
+        orders = await productHelper.getAllOrders()
+
+        orders.forEach(orders => {
+            if (orders.totalAmount >= minimum && orders.totalAmount <= maximum) {
+                arr.push(products)
+            }
+        });
+        orders = arr;
+    }
+
+        res.render('admin/all-orders', { layout: 'admin-layout', orders,pageCount,count })
     },
     cancellorderGet: (req, res) => {
         adminHelper.cancellOrder(req.query.id).then((response) => {
