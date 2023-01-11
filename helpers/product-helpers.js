@@ -102,9 +102,22 @@ module.exports={
     },
     addCategory:(categoryName)=>{
         return new Promise((resolve,reject)=>{
-          db.get().collection(collection.CATEGORY_COLLECTION).insertOne(categoryName).then((data)=>{
-            resolve(data.insertedId)
-          })
+            let name=db.get().collection(collection.CATEGORY_COLLECTION).findOne({category:categoryName.category})
+            if(name){
+                response.add=false
+                response.erorMsg="Already existed"
+                resolve(response)
+                
+                
+            }
+            else{
+                db.get().collection(collection.CATEGORY_COLLECTION).insertOne(categoryName).then((data)=>{
+                    response.add=true
+                    resolve(data.insertedId)
+                  })
+               
+            }
+          
         })
       },
       deleteCategory:(categoryId)=>{

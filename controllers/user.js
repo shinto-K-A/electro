@@ -21,6 +21,7 @@ module.exports = {
         res.render('user/index', { logIn, cartCount,wishCount,banner});
     },
     viewLaptop: async (req, res) => {
+        
         logIn = req.session.user
         // let cartCount = null
         // let wishCount = null
@@ -124,20 +125,26 @@ module.exports = {
         res.redirect('/login')
     },
     singleproductGet: async (req, res) => {
-        
+
             logIn = req.session.user
-        //let products=await userHelpers.getCartProducts(req.session.user._id)
-        // let cartCount = null
-        // let wishCount = null
-        if (logIn) {
-            cartCount = await userHelpers.getCartCount(req.session.user._id)
-            wishCount = await userHelpers.getWishCount(req.session.user._id)
-        }
-        productHelpers.getOneproduct(req.query.id).then((response) => {
-            res.render('user/single-product', { response, logIn, cartCount,wishCount })
+            //let products=await userHelpers.getCartProducts(req.session.user._id)
+            // let cartCount = null
+            // let wishCount = null
+            if (logIn) {
+                cartCount = await userHelpers.getCartCount(req.session.user._id)
+                wishCount = await userHelpers.getWishCount(req.session.user._id)
+            }
+            productHelpers.getOneproduct(req.query.id).then((response) => {
+                res.render('user/single-product', { response, logIn, cartCount,wishCount })
+    
+    
+            }).catch((eror)=>{
+                res.render('user/eror')
+            })
 
-
-        })
+        
+        
+           
         
         
         
@@ -219,14 +226,18 @@ module.exports = {
         })
     },
     placeorderGet: async (req, res) => {
-        logIn = req.session.user
-        cartCount = await userHelpers.getCartCount(req.session.user._id)
-        adress = await userHelpers.AllAddress(req.session.user._id)
-        //console.log(adress,'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-        wishCount = await userHelpers.getWishCount(req.session.user._id)
+        
+            logIn = req.session.user
+            cartCount = await userHelpers.getCartCount(req.session.user._id)
+            adress = await userHelpers.AllAddress(req.session.user._id)
+            //console.log(adress,'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+            wishCount = await userHelpers.getWishCount(req.session.user._id)
+    
+            let total = await userHelpers.getTotalAmount(req.session.user._id)
+            res.render('user/place-order', { total, user: req.session.user, logIn, cartCount, adress,wishCount })
 
-        let total = await userHelpers.getTotalAmount(req.session.user._id)
-        res.render('user/place-order', { total, user: req.session.user, logIn, cartCount, adress,wishCount })
+        
+       
     },
     placeorderPost: async (req, res) => {
         let products = await userHelpers.getCartProductList(req.body.userId)
@@ -512,6 +523,9 @@ module.exports = {
             res.json({ response })
           })
         },
+        errorGet:(req,res)=>{
+            res.render('user/eror')
+        }
       
       
 

@@ -144,14 +144,24 @@ module.exports = {
     categoryGet: (req, res) => {
         res.header("Cache-Control", "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0")
         productHelper.getAllCategories().then((categor) => {
-            res.render('admin/add-category', { layout: 'admin-layout', categor })
+            res.render('admin/add-category', { layout: 'admin-layout', categor,categorEror: req.session.errMsg })
+            req.session.errMsg=null
 
         })
 
     },
     categoryPost: (req, res) => {
         productHelper.addCategory(req.body).then((response) => {
-            res.redirect('/admin/add-categorys')
+            if(response.add){
+                res.redirect('/admin/add-categorys')
+
+            }
+            else{
+                req.session.errMsg=response.erorMsg
+                res.redirect('/admin/add-categorys')
+                
+            }
+            
 
         })
     },

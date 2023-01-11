@@ -7,7 +7,7 @@ const {homePage,viewLaptop,loginGet,loginPost,signUp,signupPost,logout,viewAcess
     mycartGet,changequantityPost,removeitemPost,placeorderGet,placeorderPost,successGet,
     forgotpasswordGet,forgotpasswordPost,
     verifypaymentPost,changepasswordPost,profileGet,profilePost,removeadressPost,myorderGet,resetGet,checkoldpasswordPost,
-    resetPost,vieworderedproductGet,cancellorderedproductGet,returnorderedproductGet,offerGet,coupenPost,addToWish,mywishGet,DeleteProductWish}=require('../controllers/user')
+    resetPost,vieworderedproductGet,cancellorderedproductGet,returnorderedproductGet,offerGet,coupenPost,addToWish,mywishGet,DeleteProductWish,errorGet}=require('../controllers/user')
     var paypal = require('paypal-rest-sdk');
 paypal.configure({
         'mode': 'sandbox', //sandbox or live 
@@ -97,6 +97,8 @@ router.get('/my-wish',mywishGet)
 /*POST deleteFromWish*/
 /*post*/
 router.post('/deleteFromWish', DeleteProductWish)
+/*GET error-page*/
+router.get('/error-page',errorGet)
 
 
 
