@@ -62,6 +62,9 @@ app.use(session({
 
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
+// app.get("*",(req,res)=>{
+//   console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+//   res.render('user/eror')})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -78,5 +81,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+  
 
 module.exports = app;

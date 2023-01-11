@@ -141,17 +141,20 @@
 
 					<div class="order-col">
 						<div><strong style="color: gray;">TOTAL PRICE</strong></div>
-						<div><strong class="order-total" id="totalprice" style="color: gray;"></strong></div>
+						<div><strong class="order-total" id="totalprice" style="color: gray;"></strong>
+						</div>
 
 					</div>
 					<div class="order-col">
 						<div><strong style="color: gray;">DISCOUNT PRICE</strong></div>
-						<div><strong class="order-total" id="discountprice" style="color: gray;"></strong></div>
+						<div><strong class="order-total" id="discountprice" style="color: gray;"></strong>
+						</div>
 
 					</div>
 					<div class="order-col">
 						<div><strong style="color: gray;">YOU SAVED</strong></div>
-						<div><strong class="order-total" id="savedprice" style="color: gray;"></strong></div>
+						<div><strong class="order-total" id="savedprice" style="color: gray;"></strong>
+						</div>
 
 					</div>
 				</div>
@@ -202,23 +205,61 @@
 				method: 'post',
 				data: $('#checkout-form').serialize(),
 				success: (response) => {
-					alert('confirm')
 					if (response.codSuccess) {
-						location.href = '/success'
+
+						setTimeout(() => { location.href = '/success' }, 2000)
+						Swal.fire({
+							position: 'top-center',
+							icon: 'success',
+							title: 'order placed successfully',
+							showConfirmButton: false,
+							timer: 1500
+						})
+
+
 					}
 					else if (response.pay) {
-						location.replace(response.linkto)
+						Swal.fire({
+							title: 'Are you sure?',
+							text: "You won't be able to revert this!",
+							icon: 'warning',
+							showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Yes,continue'
+						}).then((result) => {
+							if (result.isConfirmed) {
+								location.replace(response.linkto)
+								
+							}
+						})
+						//setTimeout(() => {  = '/success' }, 2000)
+
 
 					} else {
-						razorpayPayment(response)
+						Swal.fire({
+							title: 'Are you sure?',
+							text: "You won't be able to revert this!",
+							icon: 'warning',
+							showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Yes,continue'
+						}).then((result) => {
+							if (result.isConfirmed) {
+								razorpayPayment(response)
+								
+							}
+						})
+						
 
 					}
 				}
 			})
 		})
 		function razorpayPayment(order) {
-			console.log(order,'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO',order.id)
-			
+			console.log(order, 'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO', order.id)
+
 			var options = {
 				"key": "rzp_test_gFSzKrbiJVMqDa", // Enter the Key ID generated from the Dashboard
 				"amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -299,24 +340,25 @@
 
 						if (response.invalidDate) {
 							document.getElementById('errorMsg').innerHTML = response.invalidDateMsg
-							setTimeout(()=>{
-								response.invalidDateMsg=null
-								setTimeout(location.reload(),4000)
-							},3000)
+							setTimeout(() => {
+								response.invalidDateMsg = null
+								setTimeout(location.reload(), 4000)
+							}, 3000)
 						}
 						else if (response.minAmount) {
 							document.getElementById('errorMsg').innerHTML = response.minAmountMsg
-							setTimeout(()=>{
-								response.minAmountMsg=null
-								setTimeout(location.reload(),4000)
-							},3000)
+							setTimeout(() => {
+								response.minAmountMsg = null
+								setTimeout(location.reload(), 4000)
+							}, 3000)
 						}
-						else if (response.invalidCoupon) { 
+						else if (response.invalidCoupon) {
 							document.getElementById('errorMsg').innerHTML = response.invalidCouponMsg
-							setTimeout(()=>{
-								response.invalidCouponMsg=null
-								setTimeout(location.reload(),4000)
-							},3000) }
+							setTimeout(() => {
+								response.invalidCouponMsg = null
+								setTimeout(location.reload(), 4000)
+							}, 3000)
+						}
 
 
 					}

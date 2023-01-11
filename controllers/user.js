@@ -59,7 +59,7 @@ module.exports = {
         // let cartCount = null
         // let wishCount = null
         if (logIn) {
-            cartCount = await userHelpers.getCartCount(req.session.user._id)
+            cartCount = await userHelpers.getCartCount(req.session.user.f_id)
             wishCount = await userHelpers.getWishCount(req.session.user._id)
         }
         else{
@@ -124,7 +124,8 @@ module.exports = {
         res.redirect('/login')
     },
     singleproductGet: async (req, res) => {
-        logIn = req.session.user
+        
+            logIn = req.session.user
         //let products=await userHelpers.getCartProducts(req.session.user._id)
         // let cartCount = null
         // let wishCount = null
@@ -137,6 +138,10 @@ module.exports = {
 
 
         })
+        
+        
+        
+        
     },
     //Phone Number Providing
     otpGet: (req, res) => {

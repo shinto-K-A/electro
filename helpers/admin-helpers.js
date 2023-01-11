@@ -160,7 +160,7 @@ module.exports = {
                     }
                 },
                 {
-                    $limit: 7
+                    $limit: 8
                 }
             ]).toArray()
             resolve(sales)
@@ -232,7 +232,7 @@ module.exports = {
                     }
                 },
                 {
-                    $limit: 7
+                    $limit: 8
                 }
             ]).toArray()
             resolve(sales)
