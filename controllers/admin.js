@@ -59,7 +59,7 @@ module.exports = {
             products.forEach(products => {
         count++
     });
-    let pageCount = await userHelpers.paginatorCount(count)
+    let pageCount = await userHelpers.paginatorCountFive(count)
     products = await userHelpers.getFiveProducts(req.query.id)
 
     if (req.query.minimum) {
@@ -277,9 +277,9 @@ module.exports = {
         orders = await productHelper.getAllOrders()
 
         orders.forEach(orders => {
-            if (orders.totalAmount >= minimum && orders.totalAmount <= maximum) {
+            
                 arr.push(products)
-            }
+            
         });
         orders = arr;
     }

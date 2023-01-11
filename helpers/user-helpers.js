@@ -843,7 +843,7 @@ module.exports = {
     },
     paginatorCount:(count)=>{
         return new Promise((resolve, reject) => {
-          pages = Math.ceil(count/5 )
+          pages = Math.ceil(count/10 )
           let arr = []
           for (let i = 1; i <= pages; i++) {
               arr.push(i)
@@ -853,13 +853,23 @@ module.exports = {
       },
       getTenProducts: (Pageno) => {
         return new Promise(async (resolve, reject) => {
-            let val = (Pageno - 1) * 5
+            let val = (Pageno - 1) * 10
             let AllProducts_ = await db.get().collection(collection.ORDER_COLLECTION)
-                .find().sort({ _id: -1 }).skip(val).limit(5).toArray()
+                .find().sort({ _id: -1 }).skip(val).limit(10).toArray()
     
             resolve(AllProducts_)
         })
     },
+paginatorCountFive:(count)=>{
+    return new Promise((resolve, reject) => {
+      pages = Math.ceil(count/5 )
+      let arr = []
+      for (let i = 1; i <= pages; i++) {
+          arr.push(i)
+      }
+      resolve(arr)
+     })
+  },
 getFiveProducts: (Pageno) => {
     return new Promise(async (resolve, reject) => {
         let val = (Pageno - 1) * 5
