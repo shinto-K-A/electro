@@ -83,7 +83,8 @@ module.exports = {
             res.redirect('/')
         }
 
-        else res.render('user/login', { layout: null })
+        else res.render('user/login', { layout: null,error:req.session.errorMsg })
+        req.session.errorMsg=null
     },
     loginPost: (req, res) => {
         res.header(
@@ -93,22 +94,13 @@ module.exports = {
         userHelpers.doLogin(req.body).then((response) => {
             if (response.status) {
                 if (response.user.blocked) {
+                    req.session.errorMsg='You are blocked'
                     res.redirect('/login')
                 }
                 else {
-                    if(req.session.returnTo){
-                        res.redirect(req.session.returnTo);
-                        delete req.session.returnTo;
-                        console.log(req.session.returnTo,'333333')
-                      }
-                      else{
-                        req.session.loggedIn = true
+                    req.session.loggedIn = true
                     req.session.user = response.user
                     res.redirect('/')
-                        res.redirect('/')
-                      }
-  
-                    
                 }
 
             } else {
@@ -118,19 +110,71 @@ module.exports = {
 
     },
     signUp: (req, res) => {
-        res.render('user/signup', { layout: null })
+        res.render('user/signup', { layout: null,error:req.session.errorMsg })
+        req.session.errorMsg=null
     },
     signupPost: (req, res) => {
-        formData=req.body
-        userHelpers.doSignup(req.body).then((response) => {
+       req.session.formDetails=req.body
+        userHelpers.doSignup(req.body).then(async(response) => {
             if (response.status == false) {
-                res.render('user/signup', { layout: null })
-            }
+                req.session.errorMsg='Existed Email'
+                
 
-            res.redirect('/login')
+                res.redirect('/signup')
+                
+                
+            }
+            else {
+                console.log('OTP SENDEDddddddddddddddddddddddddddddd');
+                await userHelpers.sendOtp(req.body).then((response)=>{
+                    if (response.status) {
+                        console.log('OTP PAGEeeeeeeeeeeeeeeeeeeeeeeeee');
+                        signupData = response.user;
+                        
+                        res.render('user/signupotp',{layout:null})
+        
+                    }
+                    else{
+                        req.session.errorMsg='Problem while sending OTP'
+                        res.redirect('/signup')
+                    }
+                    
+                })
+                
+            }
+            
+
+            
 
         })
     },
+    signupOtpPost:async(req,res)=>{
+        console.log(req.session.formDetails,'form DETAILSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSsss');
+        console.log(req.body,'req bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+        signupsData=req.session.formDetails
+        req.session.formDetails=null
+       await userHelpers.signupOTPConfirm(req.body, signupsData).then(async(response) => {
+            if (response.status) {
+                await userHelpers.enterData(signupsData).then((response)=>{
+                    if(response.status){
+                        console.log("REDIRECT LOGIN REDIRECT LOGIN REDIRECT LOGIN REDIRECT LOGIN REDIRECT LOGIN");
+                        res.redirect('/login')
+                    }
+                    else{
+                        console.log('sssssssssssssssss');
+                        res.redirect('/signup')
+                    }
+                })
+
+            } else {
+                console.log('qqqqqqqqqqqqqqqqqqqqqqqqqwwwwwwwwww');
+                res.redirect('/signup')
+            }
+        })
+       
+
+    },
+    
     logout: (req, res) => {
         req.session.destroy()
         res.redirect('/login')
@@ -535,7 +579,7 @@ module.exports = {
           })
         },
         errorGet:(req,res)=>{
-            res.render('user/eror')
+            res.render('user/eror',{layout:null})
         }
       
       

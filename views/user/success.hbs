@@ -1,62 +1,150 @@
 <div class="section">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 order-details">
-        <div class="section-title text-center">
-          <h1 class="title text-success">ORDER PLACED</h1>
-        </div>
-        <!--================Order Details Area =================-->
-	<section class="order_details section_gap">
-		<div class="container" style="padding-top: 100PX;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 order-details">
+				<div class="section-title text-center">
+					<h1 class="title text-success">ORDER PLACED</h1>
+				</div>
+				<!--================Order Details Area =================-->
+				<section class="order_details section_gap">
+					<div class="container" style="padding-top: 100PX;">
+
+						<div class="row order_d_inner">
+							<div class="col-lg-6">
+								<div class="details_item">
+									<h4>Order Info</h4>
+									<ul class="list">
+
+										<li><a href="#"><span>Total Amount</span> :
+												{{orderDetail.totalAmount}}</a></li>
+										<li><a href="#"><span>Payment method</span> :
+												{{orderDetail.paymentMethod}}</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="details_item">
+									<h4>Shipping Address</h4>
+									<ul class="list">
+										<li><a href="#"><span>Town</span> :
+												{{orderDetail.deliveryDetails.place}}</a></li>
+										<li><a href="#"><span>City</span> :
+												{{orderDetail.deliveryDetails.city}}</a></li>
+										<li><a href="#"><span>Postoffice</span> :
+												{{orderDetail.deliveryDetails.postoffice}}</a>
+										</li>
+										<li><a href="#"><span>Postcode </span> :
+												{{orderDetail.deliveryDetails.pincode}}</a></li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="order_details_table">
+
+
+
+							<h2 class="tt-center">Total:₹ {{orderDetail.totalAmount}}</h2>
+						</div>
+					</div>
+			</div>
+			</section>
+			<script src="../assets/js/exportexcel.js"></script>
+			<script
+				src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 			
-			<div class="row order_d_inner">
-				<div class="col-lg-6">
-					<div class="details_item">
-						<h4>Order Info</h4>
-						<ul class="list">
-							
-							<li><a href="#"><span>Total Amount</span> : {{orderDetail.totalAmount}}</a></li>
-							<li><a href="#"><span>Payment method</span> : {{orderDetail.paymentMethod}}</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="details_item">
-						<h4>Shipping Address</h4>
-						<ul class="list">
-							<li><a href="#"><span>Town</span> : {{orderDetail.deliveryDetails.place}}</a></li>
-							<li><a href="#"><span>City</span> : {{orderDetail.deliveryDetails.city}}</a></li>
-							<li><a href="#"><span>Postoffice</span> : {{orderDetail.deliveryDetails.postoffice}}</a></li>
-							<li><a href="#"><span>Postcode </span> : {{orderDetail.deliveryDetails.pincode}}</a></li>
-						</ul>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div class="order_details_table">
-				
+			<div class="col-md-8">
+				<button class="btn btn-sm btn-danger " onclick="exportToPDF()">Export PDF <i class="bi bi-filetype-pdf"></i></button>
+				<table class="table table-bordered" id="invoice">
+					<thead>
+						<tr>
+							<th scope="col">No</th>
+							<th scope="col">Title</th>
+							<th scope="col">Details</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">1</th>
+							<td>Name</td>
+							<td>{{logIn.firstName}} {{logIn.lastName}}</td>
+
+						</tr>
+						<tr>
+							<th scope="row">2</th>
+							<td>Phone No</td>
+							<td>{{logIn.phoneNumber}}</td>
+
+						</tr>
+						<tr>
+							<th scope="row">3</th>
+							<td>Email</td>
+							<td>{{logIn.email}}</td>
+						</tr>
+						<tr>
+							<th scope="row">4</th>
+							<td>Postoffice</td>
+							<td>{{orderDetail.deliveryDetails.postoffice}}</td>
+						</tr>
+						<tr>
+							<th scope="row">5</th>
+							<td>Pincode</td>
+							<td>{{orderDetail.deliveryDetails.pincode}}</td>
+						</tr>
+						<tr>
+							<th scope="row">6</th>
+							<td>Address</td>
+							<td>{{orderDetail.deliveryDetails.housename}}<br>{{orderDetail.deliveryDetails.place}}<br>{{orderDetail.deliveryDetails.city}}</td>
+						</tr>
 						
-				
-					<h2 class="tt-center">Total:₹ {{orderDetail.totalAmount}}</h2>
-				</div>
+						
+						<tr>
+							<th colspan="3">Total Price: {{orderDetail.totalAmount}}</th>
+
+						</tr>
+					</tbody>
+				</table>
+
+
 			</div>
+
+			<!--================End Order Details Area =================-->
+
+
+
+
+
+
 		</div>
-	</section>
-	<!--================End Order Details Area =================-->
+		<a href="/"><button class="primary-btn order-submit">Home</button>
+	</div>
 
 
 
 
-
-
-      </div>
-      <a href="/"><button class="primary-btn order-submit">Home</button>
-    </div>
-
-
-
-
-  </div>
 </div>
 </div>
+</div>
+<script>
+
+	  function exportToPDF() {
+        const element = document.getElementById('invoice');
+        element.style.width = '100%';
+        element.style.height = '900px';
+        let opt = {
+            margin: 10,
+            filename: 'Ecomerce.pdf',
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 1 },
+            jsPDF: { unit: 'mm', orientation: 'landscape' }
+
+        }
+        html2pdf().set(opt)
+            .from(element)
+            .save();
+
+    }
+
+</script>

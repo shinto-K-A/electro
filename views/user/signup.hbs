@@ -52,7 +52,7 @@
                         <div class="form-group">
                             <label for="">Phone</label>
                             <input type="text" class="form-control" id="contact" name="phoneNumber"
-                                placeholder="Password" onkeyup="validatePassword()">
+                                placeholder="Phone" onkeyup="validatePassword()">
                             <span id="" style="color: red;"></span>
                         </div>
                         <div class="form-group">
@@ -61,17 +61,25 @@
                                 placeholder="Password" onkeyup="validatePassword()">
                             <span id="password-error" style="color: red;"></span>
                         </div>
-                        <div class="form-group"></div>
+                       
 
                         <label for="">Conform Password</label>
                         <input type="password" class="form-control" id="conform-password" placeholder="Password"
                             onkeyup="passwordcheck()">
                         <span id="passwords-error" style="color: red;"></span>
+                       
+                         <div class="form-group">
+                             <span class="text-danger">{{error}}</span>
+                         </div>
                 </div>
                 {{!-- <input class="" type="checkbox" name="blocked" value="false" hidden> --}}
+               
 
                 <div class="form-group">
+
+                    
                     <div class="text-center">
+                         
                         <button type="submit" id="contact-submit" class="btn btn-primary float-right mt-2"
                             onclick="return validateSignup()">Sign up</button>
                         <div id="submit-error" style="color: red;"></div>

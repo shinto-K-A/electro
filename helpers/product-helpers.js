@@ -166,7 +166,6 @@ module.exports={
             let products =await db.get().collection(collection.BANNER_COLLECTION).find({status:true}).toArray()
             resolve(products)
         })
-
     },
     getAllBannerAdmin: () => {  
         return new Promise(async (resolve, reject) => {   

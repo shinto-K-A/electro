@@ -22,22 +22,56 @@ paypal.configure({
 module.exports = {
     doSignup: (userData) => {
         return new Promise(async (resolve, reject) => {
+            console.log("ENTERED IN USER HELPER HHHHHHHHHHHHHHHHHHHHHHHHHHHH");
             let user = await db.get().collection(collection.USER_COLLECTION).findOne({ email: userData.email })
             if (user) {
+                console.log("User is there rrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeee");
                 resolve({ status: false })
 
             } else {
+                console.log("User is NOT there rrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeee");
+                resolve({ status: true })
                 
-                userData.password = await bcrypt.hash(userData.password, 10)
-                userData.blocked = false
-                userData.wallet = 0
-                db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((response) => {
-                    resolve({ status: true })
-                })
+                // userData.password = await bcrypt.hash(userData.password, 10)
+                // userData.blocked = false
+                // userData.wallet = 0
+                // db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((response) => {
+                //     resolve({ status: true })
+                // })
             }
 
 
         })
+
+    },
+    sendOtp:(formData)=>{
+        try{
+            return new Promise(async (resolve, reject) => {
+               
+            let response = {}
+            response.status=true
+            
+            Client.verify.services(process.env.TWILIO_SERVICE_ID)
+                        .verifications
+                        .create({ to: `+91${formData.phoneNumber}`, channel: 'sms' })
+                        .then((data) => {
+                            console.log(data,'dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    
+    
+                        });
+    
+                    resolve(response)
+
+
+            })
+                
+
+
+        }
+        catch(error){
+            console.log(error,'errorrrerrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+        }
+       
 
     },
     doLogin: (userData) => {
@@ -116,6 +150,43 @@ module.exports = {
                     }
                 })
         })
+    },
+    signupOTPConfirm: (confirmotp, userData) => {
+        return new Promise((resolve, reject) => {
+
+            console.log(userData,'USERDATA USERDATA USERDATA USERDATA USERDATA USERDATA ')
+            Client.verify.services(process.env.TWILIO_SERVICE_ID)
+                .verificationChecks
+                .create({
+                    to: `+91${userData.phoneNumber}`,
+                    code: confirmotp.phone
+                })
+                .then((data) => {
+                    if (data.status == 'approved') {
+                        console.log("APPROVED APPROVED APPROVED APPROVED APPROVED APPROVED APPROVED APPROVED APPROVED APPROVED ");
+
+                        resolve({ status: true })
+                    } else {
+                        resolve({ status: false })
+                    }
+                })
+        })
+    },
+    enterData:async(userData)=>{
+        return new Promise(async (resolve, reject) => {
+            userData.password = await bcrypt.hash(userData.password, 10)
+                userData.blocked = false
+                userData.wallet = 0
+                db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((response) => {
+                    response.status=true
+                    resolve(response)
+                })
+
+        })
+
+        
+
+
     },
     addtoCart: (proId, userId) => {
         let ProObj = {

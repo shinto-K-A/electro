@@ -5,7 +5,7 @@ var userHelpers=require('../helpers/user-helpers')
 const {homePage,viewLaptop,loginGet,loginPost,signUp,signupPost,logout,viewAcessory,
     viewCamera,singleproductGet,otpGet,postOtp,otppageGet,postconfirmOTP,addtocartGet,
     mycartGet,changequantityPost,removeitemPost,placeorderGet,placeorderPost,successGet,
-    forgotpasswordGet,forgotpasswordPost,
+    forgotpasswordGet,forgotpasswordPost,signupOtpPost,
     verifypaymentPost,changepasswordPost,profileGet,profilePost,removeadressPost,myorderGet,resetGet,checkoldpasswordPost,
     resetPost,vieworderedproductGet,cancellorderedproductGet,returnorderedproductGet,offerGet,coupenPost,addToWish,mywishGet,DeleteProductWish,errorGet}=require('../controllers/user')
     var paypal = require('paypal-rest-sdk');
@@ -43,6 +43,8 @@ router.post('/login',loginPost)
 router.get('/signup',signUp)
 /*POST signup*/
 router.post('/signup', signupPost)
+/*POST signupotp*/
+router.post('/otpsignup',signupOtpPost)
 /*GET logout*/
 router.get('/logout',logout)
 /*GET singleproduct*/
