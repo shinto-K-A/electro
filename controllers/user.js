@@ -96,9 +96,19 @@ module.exports = {
                     res.redirect('/login')
                 }
                 else {
-                    req.session.loggedIn = true
+                    if(req.session.returnTo){
+                        res.redirect(req.session.returnTo);
+                        delete req.session.returnTo;
+                        console.log(req.session.returnTo,'333333')
+                      }
+                      else{
+                        req.session.loggedIn = true
                     req.session.user = response.user
                     res.redirect('/')
+                        res.redirect('/')
+                      }
+  
+                    
                 }
 
             } else {
@@ -111,6 +121,7 @@ module.exports = {
         res.render('user/signup', { layout: null })
     },
     signupPost: (req, res) => {
+        formData=req.body
         userHelpers.doSignup(req.body).then((response) => {
             if (response.status == false) {
                 res.render('user/signup', { layout: null })

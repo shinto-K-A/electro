@@ -54,31 +54,35 @@ module.exports = {
 
 
         res.header("Cache-Control", "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0")
-       await productHelper.getAllproducts().then(async(products) => {
-            let count = 0
-            products.forEach(products => {
-        count++
-    });
-    let pageCount = await userHelpers.paginatorCountFive(count)
-    products = await userHelpers.getFiveProducts(req.query.id)
+       let products=await productHelper.getAllproducts()
+      
+       let count = 0
+       products.forEach(orders => {
+       count++
+   });
+   let pageCount = await userHelpers.paginatorCountFive(count)
+   orders = await userHelpers.getFiveProducts(req.query.id)
 
-    if (req.query.minimum) {
-        let minimum = req.query.minimum.slice(1)
-        let maximum = req.query.maximum.slice(1)
-        let arr = []
-        products = await productHelper.getAllproducts()
+   if (req.query.minimum) {
+       let minimum = req.query.minimum.slice(1)
+       let maximum = req.query.maximum.slice(1)
+       let arr = []
+       products = await productHelper.getAllproducts()
 
-        products.forEach(products => {
-            
-                arr.push(products)
-            
-        });
-        products = arr;
+       products.forEach(orders => {
+           
+               arr.push(products)
+           
+       });
+       orders = arr;
     }
+        res.render('admin/view-products', { layout: 'admin-layout', products,pageCount,count })
+       
+    
             
         
-            res.render('admin/view-products', { layout: 'admin-layout', products,pageCount,count })
-        })
+           
+
     },
     addproductGet: async (req, res) => {
         res.header("Cache-Control", "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0")

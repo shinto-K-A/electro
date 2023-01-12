@@ -27,6 +27,7 @@ module.exports = {
                 resolve({ status: false })
 
             } else {
+                
                 userData.password = await bcrypt.hash(userData.password, 10)
                 userData.blocked = false
                 userData.wallet = 0

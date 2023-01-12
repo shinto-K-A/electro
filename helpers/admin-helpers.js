@@ -110,7 +110,7 @@ module.exports = {
     },
     getAllProductCount: () => {
         return new Promise(async (resolve, reject) => {
-            let productCount = await db.get().collection(collection.PRODUCT_COLLECTION).find().count()
+            let productCount = await db.get().collection(collection.PRODUCT_COLLECTION).find({status:true}).count()
             resolve(productCount)
         })
 

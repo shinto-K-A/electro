@@ -14,6 +14,17 @@ paypal.configure({
         'client_id': 'AeKupuL9mHMQYupSDgCVrhtgAdME6EfakdAs8QfATm6fG7hPVV_mxzOHFy4ipCwjhYqaRT1xF9DPn6Gz', // please provide your client id here 
         'client_secret': 'EG0VsX6KWQamdlsXfFQ2b2fYY0ERUGsqUHeWUnwTsnerdjV49xGBru10vlGjvnU-Dak3-tJqiT6o--74' // provide your client secret here 
       });
+      // const verifyLogin = async(req, res, next) => {
+      //   if (req.session.user) {    
+      //     next();
+      //   } 
+      //   else { 
+      //     console.log('kkkkkkkkkkk8888888888888888999999999999');
+          
+      //     req.session.returnTo = req.url; //storing the url that just got restricted and redirecting to login
+      //    res.redirect('/login');   
+      //   }
+      // };
 
 
 /* GET home page. */

@@ -6,6 +6,7 @@ var objectId = require('mongodb').ObjectId
 module.exports={
     addProduct:(details)=>{
         return new Promise(async(resolve,reject)=>{
+            details.status=true
             db.get().collection(collection.PRODUCT_COLLECTION).insertOne(details)
             resolve()
 
@@ -19,13 +20,17 @@ module.exports={
     },
     getAllproducts:()=>{
         return new Promise(async(resolve,reject)=>{
-            let products=await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray()
-            resolve(products)
+            await db.get().collection(collection.PRODUCT_COLLECTION).find({status:true}).toArray().then((products)=>{
+                console.log(products,'jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+                resolve(products)
+
+            })
+            
         })
     },
     getLaptops:()=>{
         return new Promise(async(resolve,reject)=>{
-            await db.get().collection(collection.PRODUCT_COLLECTION).find({category:'laptop'}).toArray().then((response)=>{
+            await db.get().collection(collection.PRODUCT_COLLECTION).find({category:'laptop',status:true}).toArray().then((response)=>{
                 resolve(response)
 
             })
@@ -35,7 +40,7 @@ module.exports={
     },
     getAcesory:()=>{
         return new Promise(async(resolve,reject)=>{
-            await db.get().collection(collection.PRODUCT_COLLECTION).find({category:'accessory'}).toArray().then((response)=>{
+            await db.get().collection(collection.PRODUCT_COLLECTION).find({category:'accessory',status:true}).toArray().then((response)=>{
                 resolve(response)
 
             })
@@ -45,7 +50,7 @@ module.exports={
     },
     getCamera:()=>{
         return new Promise(async(resolve,reject)=>{
-            await db.get().collection(collection.PRODUCT_COLLECTION).find({category:'camera'}).toArray().then((response)=>{
+            await db.get().collection(collection.PRODUCT_COLLECTION).find({category:'camera',status:true}).toArray().then((response)=>{
                 resolve(response)
 
             })
@@ -67,7 +72,7 @@ module.exports={
         return new Promise ((resolve,reject)=>{
             console.log(userID)
             console.log(objectId(userID))
-            db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({_id:objectId(userID)}).then((response)=>{
+            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objectId(userID)},{$set:{status:false}}).then((response)=>{
                 resolve(response)
             })
         })
