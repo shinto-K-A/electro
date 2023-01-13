@@ -109,9 +109,13 @@ module.exports = {
 
     },
     editproductGet: async (req, res) => {
-        let product = await productHelper.getOneproduct(req.query.id)
-        console.log(product);
-        res.render('admin/edit-product', { layout: 'admin-layout', product });
+        try{let product = await productHelper.getOneproduct(req.query.id)
+            console.log(product);
+            res.render('admin/edit-product', { layout: 'admin-layout', product });}
+            catch(erer){
+                res.render('admin/errorpage',{layout:null})
+            }
+        
     },
     editproductPost: async (req, res) => {
         let editid = req.params.id
@@ -181,6 +185,8 @@ module.exports = {
         await productHelper.findoneCategory(req.query.id).then((response) => {
             res.render('admin/edit-category', { layout: 'admin-layout', response })
             console.log(response);
+        }).catch((erer)=>{
+            res.render('admin/errorpage',{layout:null})
         })
     },
     editcategoryPost: (req, res) => {
@@ -218,6 +224,8 @@ module.exports = {
         productHelper.getOneproduct(req.query.id).then((response) => {
             res.render('admin/edit-stock', { layout: 'admin-layout', response })
 
+        }).catch((erer)=>{
+            res.render('admin/errorpage',{layout:null})
         })
     },
     editstockPost: (req, res) => {
@@ -238,6 +246,8 @@ module.exports = {
             res.render('admin/edit-banner', { layout: 'admin-layout', baners })
 
 
+        }).catch((erer)=>{
+            res.render('admin/errorpage',{layout:null})
         })
 
     },
@@ -350,6 +360,9 @@ module.exports = {
         adminHelper.findCoupen(req.query.id).then((response)=>{
             res.render('admin/edit-offer',{layout: 'admin-layout',response})
 
+        }).catch((eror)=>{
+            res.render('admin/errorpage',{layou:null})
+
         })
         
     },
@@ -418,6 +431,26 @@ module.exports = {
 
 
     },
+    salespdfPost:async(req,res)=>{
+    day=req.body.fromdate;
+   todate=req.body.todate;
+  
+   await adminHelper.DailypdfReport(day,todate).then(async(daily)=>{
+    console.log(daily,'daily yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+    let User = req.session.admin;
+    let totalOrders = await adminHelper.getTotalOrders()
+    let totalProducts = await adminHelper.getAllProductCount()
+    let salesData = await adminHelper.getAllSales()
+    let TotalUsers = await adminHelper.getTotalUsers()
+    let yearly = await adminHelper.getYearlySalesGraph();
+    let monthly = await adminHelper.getMonthlySalesGraph();
+res.render('admin/landing',{layout:'admin-layout',totalOrders, totalProducts, salesData, TotalUsers, daily, yearly, monthly })
+
+   }).catch((eroe)=>{
+    res.render('admin/errorpage',{layout:null})
+   })
+  
+    }
 
 
 

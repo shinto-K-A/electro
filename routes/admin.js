@@ -4,7 +4,8 @@ var productHelper=require('../helpers/product-helpers')
 const {home,postLogin,viewProduct,addproductGet,addproductPost,deleteproductGet,editproductGet,editproductPost,userView,blockuserGet,unblockuserGet,
     categoryGet,categoryPost,deletecategoryGet,editcategoryGet,editcategoryPost,stockGet,editstockGet
     ,bannerGet,editstockPost,editbannerPost,editbannerGet,orderGet,cancellorderGet,shipedorderGet,deliverorderGet,offerGet,addcouponPost,logoutGet
-    ,addbannerGet,addbannerPost,deleteBannerGet,blockbannerGet,unblockbannerGet,addcouponGet,vieworderedproductGet,editofferGet,editcouponPost,deleteofferGet}=require('../controllers/admin')
+    ,addbannerGet,addbannerPost,deleteBannerGet,blockbannerGet,unblockbannerGet,addcouponGet,vieworderedproductGet,editofferGet,editcouponPost,deleteofferGet,
+    salespdfPost}=require('../controllers/admin')
 
     const multer=require('multer')
     const multerStorage = multer.diskStorage({
@@ -95,5 +96,6 @@ router.get('/block-banner',blockbannerGet)
 router.get('/unblock-banner',unblockbannerGet)
 /*GET view-orderd-products*/
 router.get('/vieworder-products',vieworderedproductGet)
+
 
 module.exports = router;
