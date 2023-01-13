@@ -45,6 +45,7 @@
 								 {{/isEqual}}
 								 {{#isEqual this.status 'delivered'}}
 								  <td><h6>DELIVERED</h6></td>
+								   {{/isEqual}}
 									
 
 							</tr>
@@ -60,8 +61,8 @@
 <div class="product__pagination mt-5">
             {{#each pageCount}}
             <a href="/admin/orders?id={{this}}" class="text-white"><button class="btn btn-secondary rounded">{{this}}</button></a>  
-						{{/each}}
+		{{/each}}
 						  {{!-- {{#unless (next to last page)}} --}}
-            <a href="#"><i class="fa-sharp fa-solid fa-circle-chevron-right text-muted" ></i></a>
+            <a href="#"><i class="fa-sharp fa-solid fa-circle-chevron-right text-muted" ></i></a> 
 						     {{!-- {{/unless}} --}}
-          </div>
+         </div> 

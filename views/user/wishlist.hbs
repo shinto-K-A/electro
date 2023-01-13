@@ -31,6 +31,7 @@
                             
                            
                             <td>  <button onclick="deleteFromWish('{{this._id}}','{{this.product._id}}')"><i class="fa fa-trash"></i><span class="tooltipp">Remove</span></button></td>
+                             <td>  <button onclick="addToCart('{{this.product._id}}'),deleteFromWish('{{this._id}}','{{this.product._id}}')"><i class="fa fa-shopping-cart"></i><span class="tooltipp">add to cart</span></button></td>
 
 
                         </tr>
@@ -55,6 +56,21 @@
         <!-- /container -->
     </div>
     <script>
+        function addToCart(proId) {
+
+		$.ajax({
+			url: '/add-to-cart/' + proId,
+			method: 'get',
+			success: (response) => {
+				let count = $('#cart-count').html()
+				count = parseInt(count) + 1
+				$('#cart-count').html(count)
+
+
+			}
+		})
+
+	};
       function deleteFromWish(cartId, proId) {
     $.ajax({
         url: '/deleteFromWish',
@@ -65,7 +81,7 @@
         method: 'post',
         success: (response) => {
 
-            alert("Product Removed ")
+        
 
             location.reload()
 

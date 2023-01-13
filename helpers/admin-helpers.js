@@ -137,7 +137,7 @@ module.exports = {
             ]).toArray()
             console.log(salesData, 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
             console.log()
-            resolve(salesData[0].totalAmount)
+            resolve(salesData[0]?.totalAmount)
         })
     },
     getDailySalesGraph: () => {
@@ -296,6 +296,38 @@ module.exports = {
         })
 
     },
+    findCoupen:(coupenId)=>{
+        return new Promise(async(resolve,reject)=>{
+           let onecoupen= await db.get().collection(collection.COUPEN_COLLECTION).findOne({_id:objectId(coupenId)})
+           resolve(onecoupen)
+        })
+    },
+    editCoupon:(couponId,details)=>{
+        return new Promise(async(resolve,reject)=>{
+            await db.get().collection(collection.COUPEN_COLLECTION).updateOne({_id:objectId(couponId)},{$set:{
+                name:details.name,
+                code:details.code,
+                value:details.value,
+                maxAmount:details.maxAmount,
+                minAmount:details.minAmount,
+                endingdate:details.endingdate,
+
+
+
+            }}).then((response)=>{
+                resolve()
+            })
+
+        })
+
+    },
+    deleteCoupon:(offerId)=>{
+        return new Promise(async(resolve,reject)=>{
+            await db.get().collection(collection.COUPEN_COLLECTION).deleteOne({_id:objectId(offerId)}).then((response)=>{
+                resolve()
+            })
+        })
+    }
    
 
 

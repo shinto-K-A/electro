@@ -927,7 +927,7 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             let val = (Pageno - 1) * 10
             let AllProducts_ = await db.get().collection(collection.ORDER_COLLECTION)
-                .find().sort({ _id: -1 }).skip(val).limit(10).toArray()
+                .find().sort({_id:-1}).skip(val).limit(10).toArray()
     
             resolve(AllProducts_)
         })

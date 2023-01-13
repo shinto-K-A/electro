@@ -74,6 +74,7 @@
         <div class="row my-3">
           <div class="col-md-12">
             <div class="flot-chart-wrapper">
+              <div><span>Yearly Report</span></div>
               <div>
                 <canvas id="MyChart"></canvas>
   
@@ -84,6 +85,7 @@
         <div class="row my-3">
           <div class="col-md-12">
             <div class="flot-chart-wrapper">
+              <div><span>Monthly Report</span></div>
               <div>
                 <canvas id="MYCHART"></canvas>
   
@@ -118,8 +120,8 @@
     <div class="bg-secondary text-center rounded p-4">
       <div class="d-flex align-items-center justify-content-between mb-4">
         
-        <h6 class="mb-0">Recent Salse</h6>
-        <a href="">Show All</a>
+        <h6 class="mb-0">Monthly Salse</h6>
+       
       </div>
       <div class="table-responsive" id="tableSalesReport"  >
         
@@ -127,9 +129,9 @@
           <thead>
             <tr class="text-start">
                <th scope="col" >No</th>
-              <th scope="col">Date</th>
+              <th scope="col">Month</th>
               <th scope="col">Total Amount</th>
-              <th scope="col">Count</th>
+              <th scope="col">Total Count</th>
             </tr>
           </thead>
           {{#each monthly}}

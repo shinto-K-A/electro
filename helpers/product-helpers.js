@@ -199,7 +199,7 @@ module.exports={
     // },
     getAllOrders:()=>{
         return new Promise(async (resolve,reject)=>{
-           let response=await db.get().collection(collection.ORDER_COLLECTION).find().toArray()
+           let response=await db.get().collection(collection.ORDER_COLLECTION).find().sort({_id:-1}).toArray()
                 resolve(response)
 
         

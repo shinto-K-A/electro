@@ -11,9 +11,12 @@
           <p class="card-text">EXP DATE:{{this.endingdate}}</p>
           <p class="card-text">MIN AMOUNT:{{this.minAmount}}</p>
           <p class="card-text">MAX AMOUNT:{{this.maxAmount}}</p>
+          <a href="/admin/editoffer?id={{this._id}}" class="btn btn-info">Edit</a>
+          <a href="/admin/deleteoffer?id={{this._id}}" class="btn btn-danger">Delete</a>
          
         </div>
       </div>
+      
       {{/each}}
       <div><span class="text-danger">{{oferEror}}</span></div>
      

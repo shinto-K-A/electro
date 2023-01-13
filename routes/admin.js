@@ -4,7 +4,7 @@ var productHelper=require('../helpers/product-helpers')
 const {home,postLogin,viewProduct,addproductGet,addproductPost,deleteproductGet,editproductGet,editproductPost,userView,blockuserGet,unblockuserGet,
     categoryGet,categoryPost,deletecategoryGet,editcategoryGet,editcategoryPost,stockGet,editstockGet
     ,bannerGet,editstockPost,editbannerPost,editbannerGet,orderGet,cancellorderGet,shipedorderGet,deliverorderGet,offerGet,addcouponPost,logoutGet
-    ,addbannerGet,addbannerPost,deleteBannerGet,blockbannerGet,unblockbannerGet,addcouponGet,vieworderedproductGet}=require('../controllers/admin')
+    ,addbannerGet,addbannerPost,deleteBannerGet,blockbannerGet,unblockbannerGet,addcouponGet,vieworderedproductGet,editofferGet,editcouponPost,deleteofferGet}=require('../controllers/admin')
 
     const multer=require('multer')
     const multerStorage = multer.diskStorage({
@@ -75,6 +75,12 @@ router.get('/ofers',offerGet)
 router.get('/ad-coupon',addcouponGet)
 /*POST addcoupon*/
 router.post('/adcoupon',addcouponPost)
+/*GET /editoffer*/
+router.get('/editoffer',editofferGet)
+/*GET deleteoffer*/
+router.get('/deleteoffer',deleteofferGet)
+/*POST editcoupon*/
+router.post('/editcoupon',editcouponPost)
 /*GET logout*/
 router.get('/logout',logoutGet)
 /*GET add-banner*/

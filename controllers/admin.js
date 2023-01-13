@@ -16,7 +16,7 @@ module.exports = {
         let User = req.session.admin;
         let totalOrders = await adminHelper.getTotalOrders()
         let totalProducts = await adminHelper.getAllProductCount()
-        //let salesData = await adminHelper.getAllSales()
+        let salesData = await adminHelper.getAllSales()
         let TotalUsers = await adminHelper.getTotalUsers()
         let yearly = await adminHelper.getYearlySalesGraph();
         let monthly = await adminHelper.getMonthlySalesGraph();
@@ -50,38 +50,39 @@ module.exports = {
 
 
     },
-    viewProduct:async function (req, res, next) {
+    
+    viewProduct: async function (req, res, next) {
 
 
         res.header("Cache-Control", "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0")
-       let products=await productHelper.getAllproducts()
-      
-       let count = 0
-       products.forEach(orders => {
-       count++
-   });
-   let pageCount = await userHelpers.paginatorCountFive(count)
-   orders = await userHelpers.getFiveProducts(req.query.id)
+        let products = await productHelper.getAllproducts()
 
-   if (req.query.minimum) {
-       let minimum = req.query.minimum.slice(1)
-       let maximum = req.query.maximum.slice(1)
-       let arr = []
-       products = await productHelper.getAllproducts()
+        let count = 0
+        products.forEach(orders => {
+            count++
+        });
+        let pageCount = await userHelpers.paginatorCountFive(count)
+        products = await userHelpers.getFiveProducts(req.query.id)
 
-       products.forEach(orders => {
-           
-               arr.push(products)
-           
-       });
-       orders = arr;
-    }
-        res.render('admin/view-products', { layout: 'admin-layout', products,pageCount,count })
-       
-    
-            
-        
-           
+        if (req.query.minimum) {
+            let minimum = req.query.minimum.slice(1)
+            let maximum = req.query.maximum.slice(1)
+            let arr = []
+            products = await productHelper.getAllproducts()
+
+            products.forEach(orders => {
+
+                arr.push(products)
+
+            });
+            orders = arr;
+        }
+        res.render('admin/view-products', { layout: 'admin-layout', products, pageCount, count })
+
+
+
+
+
 
     },
     addproductGet: async (req, res) => {
@@ -148,24 +149,24 @@ module.exports = {
     categoryGet: (req, res) => {
         res.header("Cache-Control", "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0")
         productHelper.getAllCategories().then((categor) => {
-            res.render('admin/add-category', { layout: 'admin-layout', categor,categorEror: req.session.errMsg })
-            req.session.errMsg=null
+            res.render('admin/add-category', { layout: 'admin-layout', categor, categorEror: req.session.errMsg })
+            req.session.errMsg = null
 
         })
 
     },
     categoryPost: (req, res) => {
         productHelper.addCategory(req.body).then((response) => {
-            if(response.add){
+            if (response.add) {
                 res.redirect('/admin/add-categorys')
 
             }
-            else{
-                req.session.errMsg=response.erorMsg
+            else {
+                req.session.errMsg = response.erorMsg
                 res.redirect('/admin/add-categorys')
-                
+
             }
-            
+
 
         })
     },
@@ -240,55 +241,64 @@ module.exports = {
         })
 
     },
-    editbannerPost: async(req, res) => {
-       
-
-            let edtid = req.query.id
-            if (req.files.banner == null) {
-                Image1 = await productHelper.fetchImageOne(edtid)
-            } else {
-                Image1 = req.files.banner[0].filename
-            }
-            req.body.banner = Image1
-            productHelper.updateBanner(req.query.id, req.body).then(() => {
-                res.redirect('/admin/banner')
+    editbannerPost: async (req, res) => {
 
 
-            })
-        
+        let edtid = req.query.id
+        if (req.files.banner == null) {
+            Image1 = await productHelper.fetchImageOne(edtid)
+        } else {
+            Image1 = req.files.banner[0].filename
+        }
+        req.body.banner = Image1
+        productHelper.updateBanner(req.query.id, req.body).then(() => {
+            res.redirect('/admin/banner')
+
+
+        })
+
     },
     orderGet: async (req, res) => {
         
+            res.header("Cache-Control", "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0")
 
 
 
 
 
+            let orders=await productHelper.getAllOrders()
+            console.log(orders, 'kkkkkkkkkkkkkkkkklllllllllllllllllllllll');
+            let count = 0
+            orders.forEach(products => {
+                count++
+            });
+            let pageCount = await userHelpers.paginatorCount(count)
+            orders = await userHelpers.getTenProducts(req.query.id)
+            //let pageCount = await userHelpers.paginatorCount(count)
+            //products = await userHelpers.getTenProducts(req.query.id)
 
+            if (req.query.minimum) {
+                let minimum = req.query.minimum.slice(1)
+                let maximum = req.query.maximum.slice(1)
+                let arr = []
+                orders = await productHelper.getAllOrders()
 
-        let orders = await productHelper.getAllOrders()
-        let count = 0
-        orders.forEach(orders => {
-        count++
-    });
-    let pageCount = await userHelpers.paginatorCount(count)
-    orders = await userHelpers.getTenProducts(req.query.id)
+                orders.forEach(orders => {
 
-    if (req.query.minimum) {
-        let minimum = req.query.minimum.slice(1)
-        let maximum = req.query.maximum.slice(1)
-        let arr = []
-        orders = await productHelper.getAllOrders()
+                    arr.push(orders)
 
-        orders.forEach(orders => {
+                });
+                orders = arr;
+            }
+            console.log(orders, '555555555555555555555555666666666666666666666666666666666');
+
+            res.render('admin/all-orders', { layout: 'admin-layout', orders,pageCount, count })
+
             
-                arr.push(products)
             
-        });
-        orders = arr;
-    }
-
-        res.render('admin/all-orders', { layout: 'admin-layout', orders,pageCount,count })
+        
+       
+        
     },
     cancellorderGet: (req, res) => {
         adminHelper.cancellOrder(req.query.id).then((response) => {
@@ -322,56 +332,76 @@ module.exports = {
         })
 
     },
-    addcouponGet:(req,res)=>{
-        res.render('admin/add-coupon',{layout:'admin-layout'})
+    addcouponGet: (req, res) => {
+        res.render('admin/add-coupon', { layout: 'admin-layout' })
 
     },
     addcouponPost: (req, res) => {
-        console.log(req.body,'formmmmmmmmmmmm dataaaaaaaaa');
+        console.log(req.body, 'formmmmmmmmmmmm dataaaaaaaaa');
         adminHelper.addCoupon(req.body).then((response) => {
-                if (response.status) {
-                    req.session.Eror = response.message
-                }
+            if (response.status) {
+                req.session.Eror = response.message
+            }
 
-                res.redirect('/admin/ofers')
-            })
+            res.redirect('/admin/ofers')
+        })
     },
+    editofferGet:(req,res)=>{
+        adminHelper.findCoupen(req.query.id).then((response)=>{
+            res.render('admin/edit-offer',{layout: 'admin-layout',response})
+
+        })
+        
+    },
+    editcouponPost:(req,res)=>{
+        adminHelper.editCoupon(req.query.id,req.body).then((response)=>{
+            res.redirect('/admin/ofers')
+        })
+    },
+    deleteofferGet:(req,res)=>{
+        adminHelper.deleteCoupon(req.query.id).then((response)=>{
+            res.redirect('/admin/ofers')
+
+        })
+
+    },
+
     logoutGet: (req, res) => {
         req.session.admin = null
         req.session.logIn = false;
         res.redirect('/admin')
     },
-    addbannerGet:(req,res)=>{
-        res.render('admin/add-banner',{layout:'admin-layout'})
+    addbannerGet: (req, res) => {
+        res.render('admin/add-banner', { layout: 'admin-layout' })
     },
-    addbannerPost:(req,res)=>{
+    addbannerPost: (req, res) => {
         req.body.banner = req.files.banner[0].filename
         productHelper.addBanner(req.body)
         res.redirect('/admin/banner')
 
     },
-    deleteBannerGet:(req,res)=>{
-        productHelper.deleteBanner(req.query.id).then((response)=>{
+    deleteBannerGet: (req, res) => {
+        productHelper.deleteBanner(req.query.id).then((response) => {
             res.redirect('/admin/banner')
         })
     },
-    blockbannerGet:(req,res)=>{
-        productHelper.blockBanner(req.query.id).then((response)=>{
+    blockbannerGet: (req, res) => {
+        productHelper.blockBanner(req.query.id).then((response) => {
             res.redirect('/admin/banner')
         })
     },
-    unblockbannerGet:async(req,res)=>{
-        let banner=await productHelper.getAllBanner()
-        if(banner){
-            productHelper.blockFirst().then((response)=>{
-                productHelper.unblockBanner(req.query.id).then((response)=>{
+    unblockbannerGet: async (req, res) => {
+        let banner = await productHelper.getAllBanner()
+        if (banner) {
+            productHelper.blockFirst().then((response) => {
+                productHelper.unblockBanner(req.query.id).then((response) => {
                     res.redirect('/admin/banner')
 
                 })
             })
         }
-        else{
-            productHelper.unblockBanner(req.query.id).then((response)=>{
+        else {
+            productHelper.unblockBanner(req.query.id).then((response) => {
                 res.redirect('/admin/banner')
 
             })
@@ -382,13 +412,13 @@ module.exports = {
 
         await userHelpers.getOrderProducts(req.query.id).then((products) => {
             console.log(products, 'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
-            res.render('admin/view-ordered-product', { layout:'admin-layout',products })
+            res.render('admin/view-ordered-product', { layout: 'admin-layout', products })
 
         })
 
 
     },
-    
+
 
 
 
